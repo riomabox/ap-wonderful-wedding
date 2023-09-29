@@ -1,6 +1,6 @@
-import "./style.css";
-import javascriptLogo from "./assets/icons/javascript.svg";
-import viteLogo from "./assets/icons/vite.svg";
+import "../css/style.css";
+import javascriptLogo from "../../assets/icons/javascript.svg";
+import viteLogo from "../../assets/icons/vite.svg";
 import { setupCounter } from "./counter.js";
 
 document.querySelector("#app").innerHTML = `

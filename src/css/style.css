@@ -106,7 +106,133 @@ button:focus-visible {
     @apply text-neutral-50;
     @apply bg-neutral-800;
   }
+
+  @font-face {
+    font-family: Broted-young-plant;
+    src: url("../fonts/BrotedYoungPlantRegular.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: Broted-young-plant-script;
+    src: url("../fonts/BrotedYoungPlantScriptRegular.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: Quiche-sans-light;
+    src: url("../fonts/Fontspring-DEMO-quichesans-light.otf") format("opentype");
+  }
+
+  @font-face {
+    font-family: Quiche-sans-medium;
+    src: url("../fonts/Fontspring-DEMO-quichesans-medium.otf")
+      format("opentype");
+  }
+
+  @font-face {
+    font-family: Quiche-sans-regular;
+    src: url("../fonts/Fontspring-DEMO-quichesans-regular.otf")
+      format("opentype");
+  }
+
+  @font-face {
+    font-family: Quiche-sans-thin;
+    src: url("../fonts/Fontspring-DEMO-quichesans-thin.otf") format("opentype");
+  }
+
+  .font-outline-gold {
+    -webkit-text-stroke: 1px #b49349;
+  }
+
+  .font-outline-gold-half {
+    -webkit-text-stroke: 0.5px #b49349;
+  }
+
+  .font-outline-beige {
+    -webkit-text-stroke: 0.5px #e7cd94;
+  }
+
+  .font-outline-white {
+    -webkit-text-stroke: 1px #fff8ee;
+  }
+
+  .font-outline-white-half {
+    -webkit-text-stroke: 0.5px #fff8ee;
+  }
+
+  .font-outline-OlderSage {
+    -webkit-text-stroke: 1px #819d6d;
+  }
+
+  .font-outline-brown-half {
+    -webkit-text-stroke: 0.5px #5e460f;
+  }
+
+  .font-outline-sand-half {
+    -webkit-text-stroke: 0.5px #f7e4bd;
+  }
+
+  .font-outline-darker-Olive {
+    -webkit-text-stroke: 0.5px #46553b;
+  }
 }
 
 @tailwind components;
+
+@layer components {
+  .MainTitle {
+    @apply font-qslight text-MainTitle;
+  }
+
+  .SubTitle {
+    @apply font-bypscript text-SubTitle;
+  }
+
+  .Heading1 {
+    @apply font-byp text-Heading1;
+  }
+
+  .Heading2 {
+    @apply font-qsmedium text-Heading2;
+  }
+
+  .Heading3 {
+    @apply font-qslight text-Heading3;
+  }
+
+  .Heading4 {
+    @apply font-byp text-Heading4;
+  }
+
+  .Heading5 {
+    @apply font-qslight text-Heading4;
+  }
+
+  .BodyBold {
+    @apply font-lato text-Body font-bold;
+  }
+
+  .Body {
+    @apply font-lato text-Body font-normal;
+  }
+
+  .BodyItalic {
+    @apply font-lato text-Body font-normal italic;
+  }
+
+  .BodyBoldLarge {
+    @apply font-lato text-lg font-bold;
+  }
+
+  .BodySmall {
+    @apply font-lato text-xs font-normal;
+  }
+
+  .BodyBoldSmall {
+    @apply font-lato text-xs font-bold;
+  }
+
+  .BodyItalicSmall {
+    @apply font-lato text-xs font-normal italic;
+  }
+}
 @tailwind utilities;

@@ -109,34 +109,37 @@ button:focus-visible {
 
   @font-face {
     font-family: Broted-young-plant;
-    src: url("../fonts/BrotedYoungPlantRegular.ttf") format("truetype");
+    src: url("assets/fonts/BrotedYoungPlantRegular.ttf") format("truetype");
   }
 
   @font-face {
     font-family: Broted-young-plant-script;
-    src: url("../fonts/BrotedYoungPlantScriptRegular.ttf") format("truetype");
+    src: url("assets/fonts/BrotedYoungPlantScriptRegular.ttf")
+      format("truetype");
   }
 
   @font-face {
     font-family: Quiche-sans-light;
-    src: url("../fonts/Fontspring-DEMO-quichesans-light.otf") format("opentype");
+    src: url("assets/fonts/Fontspring-DEMO-quichesans-light.otf")
+      format("opentype");
   }
 
   @font-face {
     font-family: Quiche-sans-medium;
-    src: url("../fonts/Fontspring-DEMO-quichesans-medium.otf")
+    src: url("assets/fonts/Fontspring-DEMO-quichesans-medium.otf")
       format("opentype");
   }
 
   @font-face {
     font-family: Quiche-sans-regular;
-    src: url("../fonts/Fontspring-DEMO-quichesans-regular.otf")
+    src: url("assets/fonts/Fontspring-DEMO-quichesans-regular.otf")
       format("opentype");
   }
 
   @font-face {
     font-family: Quiche-sans-thin;
-    src: url("../fonts/Fontspring-DEMO-quichesans-thin.otf") format("opentype");
+    src: url("assets/fonts/Fontspring-DEMO-quichesans-thin.otf")
+      format("opentype");
   }
 
   .font-outline-gold {

@@ -6,11 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/css/style.css" />
     <title>The Wedding of Aghnia & Putro</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap"
+    />
+    <link rel="icon" href="../public/icons/AP_Letter_Olive_favicon.png" />
+    <script
+      src="https://kit.fontawesome.com/d060ff9a43.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
-  <body>
-    <div id="app"></div>
-    <div id="map" class="h-96 w-96"></div>
-    <iframe
+  <body class="m-auto max-w-mobile-invitation overflow-hidden shadow-2xl">
+    <section
+      id="hero"
+      class="flex h-screen w-full flex-col items-center justify-center bg-neutral-White pb-12 text-center"
+    >
+      <div>
+        <img
+          src="/assets/images/floralornament-cover.png"
+          width="92%"
+          height="92%"
+          alt="floral-ornament-cover"
+          class="w-screen"
+        />
+      </div>
+
+      <!-- cover-body -->
+      <div class="m-auto flex flex-col items-center gap-11">
+        <!-- nama-pengantin -->
+        <div
+          class="MainTitle flex flex-col gap-2 font-outline-gold animate-fade-up text-secondary-Brl-03 animate-duration-1000 animate-once"
+        >
+          <p>AGHNIA</p>
+          <p class="SubTitle">&</p>
+          <p>PUTRO</p>
+        </div>
+        <!-- invitation-words -->
+        <div
+          id="tujuan-tamu"
+          class="m-auto flex max-w-xs animate-fade-up flex-col items-center gap-2 animate-delay-300 animate-duration-1000 animate-once"
+        >
+          <p class="Body text-neutral-Black">Kepada Yth Bapak/Ibu/Saudara/i</p>
+          <p
+            id="nama-tamu"
+            class="Heading3 tracking-wider text-secondary-Brl-03"
+          ></p>
+          <p class="Body text-neutral-Black">
+            Kami mengundang Anda untuk menghadiri acara pernikahan kami
+          </p>
+        </div>
+        <!-- button -->
+        <button
+          id="open-invitation-button"
+          class="BodyBold inline-flex animate-jump items-center rounded-xl bg-primary-OlderSage px-3 py-2 text-neutral-White animate-delay-500 animate-duration-1000 animate-twice animate-ease-out hover:bg-primary-Olive"
+          href="#"
+          onclick="bukaUndangan()"
+        >
+          <img
+            id="open-invitation-img"
+            src="assets/icons/envelope-open-white.svg"
+            class="mr-2 h-4 w-4"
+            alt="envelope-open"
+          />
+          Buka Undangan
+        </button>
+      </div>
+    </section>
+    <!-- <iframe
       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1980.0536339092575!2d110.415363!3d-6.996647!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b67ee1c6343%3A0x90a5f503260f6e5e!2sPesta%20Keboen%20Restoran!5e0!3m2!1sid!2sus!4v1695982918847!5m2!1sid!2sus"
       width="600"
       height="450"
@@ -18,7 +80,7 @@
       allowfullscreen=""
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
-    ></iframe>
+    ></iframe> -->
     <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>

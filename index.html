@@ -326,6 +326,263 @@
       </div>
     </section>
 
+    <!-- wish -->
+    <section id="wish" class="flex flex-col items-center bg-primary-Olive">
+      <div class="flex flex-col items-center gap-9 px-6 pb-10 pt-10">
+        <!-- tanda kasih -->
+        <div
+          class="taos:translate-y-[25px] taos:opacity-0 flex flex-col items-center gap-6 duration-[1000ms]"
+          data-taos-offset="200"
+        >
+          <p class="Heading1 font-outline-sand-half text-secondary-Brl-01">
+            Tanda Kasih
+          </p>
+          <p class="Body text-center text-neutral-White">
+            Tanpa mengurangi rasa hormat, bagi Anda yang ingin memberikan tanda
+            kasih untuk kami, dapat melalui:
+          </p>
+          <div
+            id="account-no"
+            class="flex w-full max-w-107 flex-col items-center gap-5 rounded-4xl bg-neutral-White px-6 py-6"
+          >
+            <!-- BNI -->
+            <div id="bni" class="flex flex-col items-center gap-5 text-center">
+              <img src="assets/images/bni.png" />
+              <div class="w-40">
+                <p class="BodyBoldSmall text-neutral-Black">
+                  No. Rekening 0497001406
+                </p>
+                <p class="BodyBoldSmall text-neutral-Black">
+                  a.n. Aghnia Putri Ramadhani
+                </p>
+              </div>
+              <button
+                id="copy-bni"
+                class="BodyBoldSmall inline-flex items-center rounded-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04"
+                onclick="copyText(this)"
+                data-account="0497001406"
+                autofocus
+              >
+                Salin Nomor Rekening
+              </button>
+            </div>
+            <img src="assets/images/Line 1.png" />
+            <!-- BRI -->
+            <div id="bni" class="flex flex-col items-center gap-5 text-center">
+              <img src="assets/images/bri.png" />
+              <div class="w-48">
+                <p class="BodyBoldSmall text-neutral-Black">
+                  No. Rekening 0507 0101 9445 500
+                </p>
+                <p class="BodyBoldSmall text-neutral-Black">
+                  a.n. Putro Satrio Wibowo
+                </p>
+              </div>
+              <button
+                id="copy-bni"
+                class="BodyBoldSmall inline-flex items-center rounded-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04"
+                onclick="copyText(this)"
+                data-account="050701019445500"
+                autofocus
+              >
+                Salin Nomor Rekening
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- form ucapan doa -->
+        <div
+          class="taos:translate-y-[25px] taos:opacity-0 flex flex-col items-center gap-6 duration-[1000ms]"
+          data-taos-offset="200"
+        >
+          <p class="Heading1 font-outline-sand-half text-secondary-Brl-01">
+            Ucapan & Doa
+          </p>
+          <p class="Body text-center text-neutral-White">
+            Ucapan dari Anda merupakan kesan yang berarti bagi kami, dan mohon
+            bisa konfirmasi kehadiran Anda
+          </p>
+          <div
+            id="doa"
+            class="flex w-full max-w-107 flex-col items-start gap-5 rounded-4xl bg-neutral-White px-6 py-5"
+          >
+            <!-- nama -->
+            <div class="flex w-full flex-col items-start justify-between gap-2">
+              <p class="BodyBold text-neutral-Black">Nama</p>
+              <input
+                type="text"
+                id="nama"
+                placeholder="Nama"
+                class="Body w-full rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
+              />
+            </div>
+            <!-- konfirmasi dan jumlah orang -->
+            <div class="flex w-full items-center gap-4 justify-between">
+              <!-- konfirmasi -->
+              <div class="flex w-6/12 flex-col items-start gap-2">
+                <p class="BodyBold text-neutral-Black">Konfirmasi Kehadiran</p>
+                <select
+                  name="kehadiran"
+                  id="kehadiran"
+                  onchange="enableGuestNum()"
+                  class="Body h-32.2 w-full rounded-lg border border-solid border-secondary-Brl-03 bg-white px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
+                >
+                  <option selected value="not-selected" id="pilih-kehadiran">
+                    Hadir atau tidak?
+                  </option>
+                  <option value="present" id="hadir">Hadir</option>
+                  <option value="absent" id="tidak-hadir">Tidak Hadir</option>
+                </select>
+              </div>
+              <!-- jumlah orang -->
+              <div class="flex-center w-6/12 flex flex-col gap-2">
+                <p class="BodyBold text-neutral-Black">Jumlah Orang</p>
+                <input
+                  type="number"
+                  id="jml-orang"
+                  placeholder="Jumlah orang"
+                  max="10"
+                  min="1"
+                  disabled
+                  class="Body w-full h-[32.2px] rounded-lg border border-solid border-neutral-Grey px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
+                />
+                <!-- <select
+                 name="jml-orang"
+                 id="jml-orang"
+                 placeholder="Jumlah Orang"
+                 class="Body h-32.2 w-full rounded-lg border border-solid border-secondary-Brl-03 bg-white px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
+               >
+                 <option value="1">1</option>
+                 <option value="1">2</option>
+               </select> -->
+              </div>
+            </div>
+            <!-- Ucapan&Doa -->
+            <div class="flex w-full flex-col items-start justify-between gap-2">
+              <p class="BodyBold text-neutral-Black">Ucapan & Doa</p>
+              <textarea
+                name="ucapan"
+                id="ucapan"
+                placeholder="Mohon doanya :D"
+                rows="3"
+                class="Body w-full rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
+              ></textarea>
+            </div>
+            <div class="w-full">
+              <button
+                id="submit-wish"
+                class="BodyBold w-full rounded-xl bg-secondary-Brl-03 px-3 py-2 text-center text-neutral-White hover:bg-secondary-Brl-04"
+                onclick="sendWish()"
+              >
+                Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ucapan doa -->
+        <div id="wishes" class="flex flex-col items-end gap-4">
+          <!-- card wish -->
+          <div
+            class="taos:translate-y-[25px] taos:opacity-0 flex w-full max-w-107 flex-col items-start gap-4 rounded-4xl bg-neutral-White px-6 py-5 duration-[1000ms]"
+            data-taos-offset="100"
+          >
+            <!-- nama&tanggal -->
+            <div class="flex w-full items-center justify-between gap-16">
+              <div class="flex items-center gap-2">
+                <p class="BodyBold text-neutral-Black">Beruang Oyen</p>
+                <img src="assets/icons/check.svg" alt="hadir" width="16px" />
+              </div>
+              <p class="BodyItalicSmall text-neutral-Black">26 Oktober 2023</p>
+            </div>
+            <!-- wish -->
+            <div class="w-full">
+              <p class="Body text-neutral-Black">
+                Selamat kepada beruang grizzly dan kucing oyen, semoga sakinah
+                mawaddah warahmah
+              </p>
+            </div>
+            <!-- tombol balas -->
+            <button
+              id="balas"
+              class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
+              href="#"
+              onclick=""
+            >
+              Balas
+            </button>
+          </div>
+          <!-- button -->
+          <div
+            class="taos:translate-y-[25px] taos:opacity-0 flex items-center gap-3 duration-[1000ms]"
+            data-taos-offset="100"
+          >
+            <button
+              id="sebelumnya"
+              class="BodyBold inline-flex items-center rounded-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04"
+              href="#"
+              onclick=""
+            >
+              <img
+                id="sebelumnya"
+                src="assets/icons/arrow-left.svg"
+                class="mr-2 h-4 w-4"
+                alt="envelope-open"
+              />
+              Sebelumnya
+            </button>
+            <button
+              id="selanjutnya"
+              class="BodyBold inline-flex items-center rounded-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04"
+              href="#"
+              onclick=""
+            >
+              Selanjutnya
+              <img
+                id="selanjutnya"
+                src="assets/icons/arrow-right.svg"
+                class="ml-2 h-4 w-4"
+                alt="envelope-open"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="assets/images/wave-vertically-reversed.png" />
+      </div>
+    </section>
+
+    <!--Penutup-->
+    <section
+      id="closing"
+      class="flex flex-col items-center bg-primary-OlderSage px-6 pb-6 pt-8"
+    >
+      <div class="flex flex-col gap-12">
+        <div
+          class="taos:translate-y-[25px] taos:opacity-0 flex flex-col gap-6 duration-[1000ms]"
+          data-taos-offset="100"
+        >
+          <p class="Body text-center text-neutral-White">
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+            Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restunya,
+            kami ucapkan terima kasih.
+          </p>
+          <p class="Body text-center text-neutral-White">
+            Wassalamu’alaikum warahmatullah wabarakatuh
+          </p>
+        </div>
+        <div class="flex items-center justify-center gap-1 text-center">
+          <span class="BodyItalicSmall text-secondary-Brl-01">Built with</span
+          ><img src="assets/images/heart.png" width="25px" alt="love" /><span
+            class="BodyItalicSmall text-secondary-Brl-01"
+            >by Putro & Aghnia</span
+          >
+        </div>
+      </div>
+    </section>
+
     <!-- <iframe
       src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1980.0536339092575!2d110.415363!3d-6.996647!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b67ee1c6343%3A0x90a5f503260f6e5e!2sPesta%20Keboen%20Restoran!5e0!3m2!1sid!2sus!4v1695982918847!5m2!1sid!2sus"
       width="600"

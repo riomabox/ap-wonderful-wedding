@@ -4,114 +4,98 @@ import viteLogo from "../../assets/icons/vite.svg";
 import { setupCounter } from "./counter.js";
 import { Loader } from "@googlemaps/js-api-loader";
 
-// document.querySelector("#app").innerHTML = `
-//   <div>
-//     <a href="https://vitejs.dev" target="_blank">
-//       <img src="${viteLogo}" class="logo" alt="Vite logo" />
-//     </a>
-//     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-//       <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-//     </a>
-//     <h1>Hello Vite!</h1>
-//     <div class="card">
-//       <button id="counter" type="button"></button>
-//     </div>
-//     <p class="read-the-docs">
-//       Click on the Vite logo to learn more
-//     </p>
-//   </div>
-// `;
-
-// setupCounter(document.querySelector("#counter"));
 
 const root = document.getElementsByTagName("html")[0];
 root.setAttribute('class', 'bg-primary-SageBase')
 
-// const audio = (() => {
-//   let instance = null;
+const audio = (() => {
+  let instance = null;
 
-//   let createOrGet = () => {
-//     if (instance instanceof HTMLAudioElement) {
-//       return instance;
-//     }
+  let createOrGet = () => {
+    if (instance instanceof HTMLAudioElement) {
+      return instance;
+    }
 
-//     instance = new Audio();
-//     instance.autoplay = true;
-//     instance.src = document
-//       .getElementById("sound-button")
-//       .getAttribute("data-url");
-//     instance.load();
-//     instance.currentTime = 0;
-//     instance.volume = 1;
-//     instance.muted = false;
-//     instance.loop = true;
+    instance = new Audio();
+    instance.autoplay = true;
+    instance.src = document
+      .getElementById("sound-button")
+      .getAttribute("data-url");
+    instance.load();
+    instance.currentTime = 0;
+    instance.volume = 1;
+    instance.muted = false;
+    instance.loop = true;
 
-//     return instance;
-//   };
+    return instance;
+  };
 
-//   return {
-//     play: () => {
-//       createOrGet().play();
-//     },
-//     pause: () => {
-//       createOrGet().pause();
-//     },
-//   };
-// })();
+  return {
+    play: () => {
+      createOrGet().play();
+    },
+    pause: () => {
+      createOrGet().pause();
+    },
+  };
+})();
 
-// const escapeHtml = (unsafe) => {
-//   return unsafe
-//     .replace(/&/g, "&amp;")
-//     .replace(/</g, "&lt;")
-//     .replace(/>/g, "&gt;")
-//     .replace(/"/g, "&quot;")
-//     .replace(/'/g, "&#039;");
-// };
+const escapeHtml = (unsafe) => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
 
-// /*---- Make Side Menu Div to controlable ----*/
-// var sideMenu = document.getElementById("side-menu");
-// /*---- Make Hamburger Button to controlable ----*/
-// var hamburgerBtn = document.getElementById("hamburger-button");
-// /*---- Make Sound Button to controlable ----*/
-// var soundBtn = document.getElementById("sound-button");
-// /*---- Handler for Open Side Menu with change right property to 0 ----*/
-// var overlay = document.getElementById("overlay");
-// function sideMenuHandler() {
-//   /*---- If Side Menu Div invisible ----*/
-//   if (sideMenu.classList.contains("right-[-75vw]")) {
-//     sideMenu.classList.remove("right-[-75vw]");
-//     sideMenu.classList.add("right-0");
-//     hamburgerBtn.innerHTML = "<i class='fa-solid fa-x'></i>";
-//     overlay.style.display = "block";
-//   } else {
-//     sideMenu.classList.remove("right-0");
-//     sideMenu.classList.add("right-[-75vw]");
-//     hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>";
-//     overlay.style.display = "none";
-//   }
-// }
-// /*---- Handler for play backsongs ----*/
-// function backsongsHandler(btn) {
-//   /*---- If backsongs is not played ----*/
-//   if (btn.getAttribute("data-status").toString() != "true") {
-//     btn.setAttribute("data-status", "true");
-//     audio.play();
-//     btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-//   } else {
-//     btn.setAttribute("data-status", "false");
-//     audio.pause();
-//     btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-//   }
-// }
-// /*---- Handler for Close Side Menu with change right property to -250px ----*/
-// function closeMenu() {
-//   sideMenu.classList.remove("right-0");
-//   sideMenu.classList.add("right-[-75vw]");
-//   overlay.style.display = "none";
-//   if ((hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>")) {
-//     hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>";
-//   }
-// }
+/*---- Make Side Menu Div to controlable ----*/
+var sideMenu = document.getElementById("side-menu");
+/*---- Make Hamburger Button to controlable ----*/
+var hamburgerBtn = document.getElementById("hamburger-button");
+/*---- Make Sound Button to controlable ----*/
+var soundBtn = document.getElementById("sound-button");
+/*---- Handler for Open Side Menu with change right property to 0 ----*/
+var overlay = document.getElementById("overlay");
+function sideMenuHandler() {
+  /*---- If Side Menu Div invisible ----*/
+  if (sideMenu.classList.contains("right-[-75vw]")) {
+    sideMenu.classList.remove("right-[-75vw]");
+    sideMenu.classList.add("right-0");
+    hamburgerBtn.innerHTML = "<i class='fa-solid fa-x'></i>";
+    overlay.style.display = "block";
+  } else {
+    sideMenu.classList.remove("right-0");
+    sideMenu.classList.add("right-[-75vw]");
+    hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>";
+    overlay.style.display = "none";
+  }
+}
+window.sideMenuHandler = sideMenuHandler;
+/*---- Handler for play backsongs ----*/
+function backsongsHandler(btn) {
+  /*---- If backsongs is not played ----*/
+  if (btn.getAttribute("data-status").toString() != "true") {
+    btn.setAttribute("data-status", "true");
+    audio.play();
+    btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+  } else {
+    btn.setAttribute("data-status", "false");
+    audio.pause();
+    btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+  }
+}
+window.backsongsHandler = backsongsHandler;
+/*---- Handler for Close Side Menu with change right property to -250px ----*/
+function closeMenu() {
+  sideMenu.classList.remove("right-0");
+  sideMenu.classList.add("right-[-75vw]");
+  overlay.style.display = "none";
+  if ((hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>")) {
+    hamburgerBtn.innerHTML = "<i class='fa-solid fa-bars'></i>";
+  }
+}
+window.closeMenu = closeMenu;
 
 const bukaUndangan = async () => {
   const body = document.getElementsByTagName("BODY")[0];
@@ -255,6 +239,7 @@ const enableGuestNum = () => {
       
     }
 }
+window.enableGuestNum = enableGuestNum;
 
 
 

@@ -202,9 +202,9 @@ let ucapan = document.getElementById("ucapan");
 
 const sendWish = () => {
   if (nama.value.length === 0) {
-    alert("Namanya diisi dulu yaa");
+    alert("Silahkan isi nama");
   } else if (nama.value.length >= 50) {
-    alert("Namanya kepanjangan ih");
+    alert("Nama tidak boleh melebihi 50 karakter");
   }
 
   if (kehadiran.value === "not-selected") {
@@ -214,7 +214,7 @@ const sendWish = () => {
   if (jumlahOrang.value.length === 0) {
     alert("Silahkan isi jumlah kehadiran");
   } else if (jumlahOrang.value >= 10) {
-    alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 5 orang");
+    alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 10 orang");
   }
 
   if (ucapan.value.length === 0) {

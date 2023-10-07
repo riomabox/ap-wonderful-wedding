@@ -232,6 +232,7 @@ const enableGuestNum = () => {
     jumlahOrang.style.borderColor = "#B8B2A4";
   }
 };
+window.enableGuestNum = enableGuestNum;
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_API_KEY_GMAPS,

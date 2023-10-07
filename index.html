@@ -17,64 +17,111 @@
     ></script>
   </head>
   <body class="m-auto max-w-mobile-invitation shadow-2xl">
-    <section
-      id="hero"
-      class="flex h-screen w-full flex-col items-center justify-center bg-neutral-White pb-12 text-center"
-    >
-      <div>
-        <img
-          src="/assets/images/floralornament-cover.png"
-          width="92%"
-          height="92%"
-          alt="floral-ornament-cover"
-          class="w-screen"
-        />
-      </div>
+    <!-- side menu-->
+    <div
+      id="overlay"
+      class="fixed bottom-0 left-0 right-0 top-0 z-10 hidden h-full w-full bg-transparent backdrop-blur-sm"
+    ></div>
 
-      <!-- cover-body -->
-      <div class="m-auto flex flex-col items-center gap-11">
-        <!-- nama-pengantin -->
-        <div
-          class="MainTitle flex flex-col gap-2 font-outline-gold animate-fade-up text-secondary-Brl-03 animate-duration-1000 animate-once"
-        >
-          <p>AGHNIA</p>
-          <p class="SubTitle">&</p>
-          <p>PUTRO</p>
-        </div>
-        <!-- invitation-words -->
-        <div
-          id="tujuan-tamu"
-          class="m-auto flex max-w-xs animate-fade-up flex-col items-center gap-2 animate-delay-300 animate-duration-1000 animate-once"
-        >
-          <p class="Body text-neutral-Black">Kepada Yth Bapak/Ibu/Saudara/i</p>
-          <p
-            id="nama-tamu"
-            class="Heading3 tracking-wider text-secondary-Brl-03"
-          ></p>
-          <p class="Body text-neutral-Black">
-            Kami mengundang Anda untuk menghadiri acara pernikahan kami
-          </p>
-        </div>
-        <!-- button -->
-        <button
-          id="open-invitation-button"
-          class="BodyBold inline-flex animate-jump items-center rounded-xl bg-primary-OlderSage px-3 py-2 text-neutral-White animate-delay-500 animate-duration-1000 animate-twice animate-ease-out hover:bg-primary-Olive"
-          href="#"
-          onclick="bukaUndangan()"
-        >
-          <img
-            id="open-invitation-img"
-            src="assets/icons/envelope-open-white.svg"
-            class="mr-2 h-4 w-4"
-            alt="envelope-open"
-          />
-          Buka Undangan
-        </button>
+    <nav
+      id="side-menu"
+      class="fixed right-[-75vw] top-0 z-50 flex h-screen w-[75vw] flex-col space-y-5 bg-MatchaMilkTrans p-5 font-qsmedium text-Body tracking-0.24 text-neutral-White backdrop-blur-lg duration-300"
+    >
+      <a
+        href="javascript:void(0)"
+        class="text-right text-2xl hover:text-secondary-Brl-04"
+        onclick="closeMenu()"
+        >&times;</a
+      >
+      <div class="flex h-screen flex-col items-end justify-center gap-4">
+        <img
+          src="assets/images/AP_Letter_Olive.png"
+          class="absolute right-[5px] top-52"
+          width="115px"
+        />
+        <a class="hover:text-secondary-Brl-04" href="#couple">MEMPELAI</a>
+        <a class="hover:text-secondary-Brl-04" href="#acara">DETIL ACARA</a>
+        <!-- <a class="hover:text-amber-500" href="#">Contact Us</a>
+        <a class="hover:text-amber-500" href="#">Terms of Service</a>
+        <a class="hover:text-amber-500" href="#">Privacy Policy</a> -->
       </div>
-    </section>
+    </nav>
+
+
+    <div
+      id="dialog"
+      class="left-1/2 top-1/2 z-50 hidden h-screen w-[500px] -translate-x-1/2 -translate-y-1/2 space-y-5 transition-all duration-1000 animate-duration-1000 animate-ease-in-out animate-fade"
+    >
+      <section
+        id="hero"
+        class="flex h-screen w-full flex-col items-center justify-center bg-neutral-White pb-12 text-center"
+      >
+        <div>
+          <img
+            src="/assets/images/floralornament-cover.png"
+            width="92%"
+            height="92%"
+            alt="floral-ornament-cover"
+            class="w-screen"
+          />
+        </div>
+
+        <!-- cover-body -->
+        <div class="m-auto flex flex-col items-center gap-11">
+          <!-- nama-pengantin -->
+          <div
+            class="MainTitle flex flex-col gap-2 font-outline-gold animate-fade-up text-secondary-Brl-03 animate-duration-1000 animate-once"
+          >
+            <p>AGHNIA</p>
+            <p class="SubTitle">&</p>
+            <p>PUTRO</p>
+          </div>
+          <!-- invitation-words -->
+          <div
+            id="tujuan-tamu"
+            class="m-auto flex max-w-xs animate-fade-up flex-col items-center gap-2 animate-delay-300 animate-duration-1000 animate-once"
+          >
+            <p class="Body text-neutral-Black">
+              Kepada Yth Bapak/Ibu/Saudara/i
+            </p>
+            <p
+              id="nama-tamu"
+              class="Heading3 tracking-wider text-secondary-Brl-03"
+            ></p>
+            <p class="Body text-neutral-Black">
+              Kami mengundang Anda untuk menghadiri acara pernikahan kami
+            </p>
+          </div>
+          <!-- button -->
+          <button
+            id="open-invitation-button"
+            class="BodyBold inline-flex animate-jump items-center rounded-xl bg-primary-OlderSage px-3 py-2 text-neutral-White animate-delay-500 animate-duration-1000 animate-twice animate-ease-out hover:bg-primary-Olive"
+            href="#"
+            onclick="bukaUndangan()"
+          >
+            <img
+              id="open-invitation-img"
+              src="assets/icons/envelope-open-white.svg"
+              class="mr-2 h-4 w-4"
+              alt="envelope-open"
+            />
+            Buka Undangan
+          </button>
+        </div>
+      </section>
+    </div>
 
     <!--CONTENT-->
     <!--Progress Bar Start-->
+    <section id="loadPage" class="animate-fade ease-in-out duration-1000 h-screen" style="opacity: 1;">
+      <div class="flex z-100 w-full bg-primary-Olive h-full items-center justify-center">
+        <div class="w-11/12">            
+          <div class="shadow w-full bg-slate-50 mt-2 rounded-2xl h-2">
+            <div id="bar" class="bg-secondary-Brl-03 rounded-2xl text-xs leading-none py-1 text-center h-2" style="width: 0%"></div>
+          </div>
+        <div>
+      </div>
+    </section>
 
     <!--subcover-->
     <section
@@ -313,15 +360,24 @@
             Lokasi Acara
           </p>
           <!-- <div class="h-40 w-72 bg-neutral-Grey">peta</div> -->
-          <div id="map" class="h-40 w-72"></div>
-          <button
+          <!-- <div id="map" class="h-40 w-72"></div> -->
+          <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1980.0536339092575!2d110.415363!3d-6.996647!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b67ee1c6343%3A0x90a5f503260f6e5e!2sPesta%20Keboen%20Restoran!5e0!3m2!1sid!2sus!4v1695982918847!5m2!1sid!2sus"
+          width="348"
+          height="172"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="rounded-2xl border-2 border-secondary-Brl-02"
+        ></iframe>
+          <!-- <button
             id="view-location"
             class="BodyBold inline-flex animate-jump items-center rounded-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White animate-delay-500 animate-duration-1000 animate-twice animate-ease-out hover:bg-secondary-Brl-04"
             href="#"
             onclick=""
           >
             Lihat Titik Lokasi
-          </button>
+          </button> -->
         </div>
       </div>
     </section>
@@ -583,15 +639,35 @@
       </div>
     </section>
 
-    <!-- <iframe
-      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1980.0536339092575!2d110.415363!3d-6.996647!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b67ee1c6343%3A0x90a5f503260f6e5e!2sPesta%20Keboen%20Restoran!5e0!3m2!1sid!2sus!4v1695982918847!5m2!1sid!2sus"
-      width="600"
-      height="450"
-      style="border: 0"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-    ></iframe> -->
-    <script type="module" src="/src/js/main.js"></script>
+    <!-- Navigation Button -->
+    <!-- Hamburger Button -->
+    <!-- Digunakan untuk mengakses side menu -->
+    <button
+      id="hamburger-button"
+      onclick="sideMenuHandler()"
+      class="fixed bottom-3 left-3 z-10 hidden h-8 w-8 animate-fade-up items-center justify-center rounded-full bg-secondary-Brl-02 text-xs text-white drop-shadow-lg animate-duration-300 animate-once animate-ease-out hover:bg-secondary-Brl-03 hover:drop-shadow-2xl"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <!-- Music Volume Button -->
+    <!-- Digunakan untuk mute/unmute backsound lagu -->
+    <button
+      id="sound-button"
+      onclick="backsongsHandler(this)"
+      class="fixed bottom-3 left-12 z-10 hidden h-8 w-8 animate-fade-up items-center justify-center rounded-full bg-secondary-Brl-02 text-xs text-white drop-shadow-lg animate-duration-300 animate-once animate-ease-out hover:bg-secondary-Brl-03 hover:drop-shadow-2xl"
+      type="button"
+      data-status="true"
+      data-url="songs/DaveKoz-CinemaParadisoSuite.mp3"
+    >
+      <i class="fa-solid fa-volume-high"></i>
+      <!-- <i class="fa-solid fa-volume-xmark"></i> -->
+    </button>
+    <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
+
+
   </body>
+
+  <!--Javascript Code-->
+  <script type="module" src="/src/js/main.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 </html>

@@ -25,7 +25,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 // setupCounter(document.querySelector("#counter"));
 
 const root = document.getElementsByTagName("html")[0];
-root.setAttribute('class', 'bg-primary-SageBase')
+root.setAttribute("class", "bg-primary-SageBase");
 
 // const audio = (() => {
 //   let instance = null;
@@ -135,19 +135,19 @@ const bukaUndangan = async () => {
     undanganTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
-      "animate-once",
+      "animate-once"
     );
     namaTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
       "animate-once",
-      "animate-delay-[700ms]",
+      "animate-delay-[700ms]"
     );
     tanggalTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
       "animate-once",
-      "animate-delay-[1400ms]",
+      "animate-delay-[1400ms]"
     );
     audio.play();
   };
@@ -159,8 +159,6 @@ const bukaUndangan = async () => {
   // await login();
   // timer();
 
-
-  
   const timer = () => {
     let weddingDate = document
       .getElementById("countdown")
@@ -179,16 +177,16 @@ const bukaUndangan = async () => {
       }
 
       document.getElementById("hari").innerHTML = Math.floor(
-        distance / (1000 * 60 * 60 * 24),
+        distance / (1000 * 60 * 60 * 24)
       );
       document.getElementById("jam").innerHTML = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       document.getElementById("menit").innerHTML = Math.floor(
-        (distance % (1000 * 60 * 60)) / (1000 * 60),
+        (distance % (1000 * 60 * 60)) / (1000 * 60)
       );
       document.getElementById("detik").innerHTML = Math.floor(
-        (distance % (1000 * 60)) / 1000,
+        (distance % (1000 * 60)) / 1000
       );
     }, 1000);
   };
@@ -205,16 +203,13 @@ const copyText = (button) => {
   button.innerHTML = `Tersalin`;
   button.disabled = true;
 
-  setTimeout(()=>{
+  setTimeout(() => {
     button.innerHTML = buttonText;
     button.disabled = false;
     button.focus();
   }, 1500);
-}
+};
 window.copyText = copyText;
-
-
-
 
 let kehadiran = document.getElementById("kehadiran");
 let nama = document.getElementById("nama");
@@ -222,41 +217,37 @@ let jumlahOrang = document.getElementById("jml-orang");
 let ucapan = document.getElementById("ucapan");
 
 const sendWish = () => {
-  if(nama.value.length === 0) {
+  if (nama.value.length === 0) {
     alert("Namanya diisi dulu yaa");
   } else if (nama.value.length >= 50) {
     alert("Namanya kepanjangan ih");
   }
 
-  if(kehadiran.value === 'not-selected') {
+  if (kehadiran.value === "not-selected") {
     alert("Silahkan isi kehadiran");
-  } 
-
-  if(jumlahOrang.value.length === 0) {
-    alert("Silahkan isi jumlah kehadiran");
-  } else if(jumlahOrang.value >= 10) {
-    alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 5 orang")
   }
 
-  if(ucapan.value.length === 0) {
+  if (jumlahOrang.value.length === 0) {
+    alert("Silahkan isi jumlah kehadiran");
+  } else if (jumlahOrang.value >= 10) {
+    alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 5 orang");
+  }
+
+  if (ucapan.value.length === 0) {
     alert("Silahkan isi ucapan dan doa");
   }
-}
+};
 window.sendWish = sendWish;
 
-
 const enableGuestNum = () => {
-    if(kehadiran.value === 'present') {
-      jumlahOrang.disabled = false;
-      jumlahOrang.style.borderColor = '#B49349'
-    } else {
-      jumlahOrang.disabled = true;
-      jumlahOrang.style.borderColor = '#B8B2A4'
-      
-    }
-}
-
-
+  if (kehadiran.value === "present") {
+    jumlahOrang.disabled = false;
+    jumlahOrang.style.borderColor = "#B49349";
+  } else {
+    jumlahOrang.disabled = true;
+    jumlahOrang.style.borderColor = "#B8B2A4";
+  }
+};
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_API_KEY_GMAPS,
@@ -284,101 +275,134 @@ loader
     // do something
   });
 
-  const progressBar = (() => {
-    let bar = document.getElementById("bar");
-    let second = 0;
-    let counter = 0;
-    let stop = false;
-  
-    const sleep = (until) =>
-      new Promise((p) => {
-        setTimeout(p, until);
-      });
-  
-    const setNum = (num) => {
-      bar.style.width = num + "%";
-      // bar.innerText = num + "%";
-  
-      return num == 100 || stop;
-    };
-  
-    (async () => {
-      while (true) {
-        if (stop || setNum(counter)) {
-          break;
-        }
-  
-        await sleep(second);
-        second += counter * counter;
-        counter += 1;
-      }
-    })();
-  
-    return {
-      stop: () => {
-        stop = true;
-        setNum(100.0);
-      },
-    };
-  })();
-  
-  const opacity = () => {
-    let modal = new Promise((res) => {
-      let clear = null;
-      clear = setInterval(() => {
-        if (document.getElementById("dialog").classList.contains("fixed")) {
-          clearInterval(clear);
-          res();
-        }
-      }, 100);
+const progressBar = (() => {
+  let bar = document.getElementById("bar");
+  let second = 0;
+  let counter = 0;
+  let stop = false;
+
+  const sleep = (until) =>
+    new Promise((p) => {
+      setTimeout(p, until);
     });
-  
-    modal.then(() => {
-      progressBar.stop();
-  
-      let op = parseInt(document.getElementById("loadPage").style.opacity);
-      let clear = null;
-  
-      clear = setInterval(() => {
-        if (op >= 0) {
-          op -= 0.025;
-          document.getElementById("loadPage").style.opacity = op;
-        } else {
-          clearInterval(clear);
-          // document.getElementById("loadPage").remove();
-          // document.getElementById("dialog").classList.add("animate-fade");
-        }
-      }, 10);
-    });
+
+  const setNum = (num) => {
+    bar.style.width = num + "%";
+    // bar.innerText = num + "%";
+
+    return num == 100 || stop;
   };
-  
-  window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-    if (document.getElementById("loadPage").classList.contains("hidden")) {
-      document.getElementById("loadPage").classList.remove("hidden");
+
+  (async () => {
+    while (true) {
+      if (stop || setNum(counter)) {
+        break;
+      }
+
+      await sleep(second);
+      second += counter * counter;
+      counter += 1;
     }
-  };
-  
-  window.addEventListener(
-    "load",
-    async () => {
-      let modal = document.getElementById("dialog");
-      let name = new URLSearchParams(window.location.search).get("to") ?? "";
-  
-      if (name.length == 0) {
-        document.getElementById("tujuan-tamu").remove();
-      } else {
-        let namaTamu = document.getElementById("nama-tamu");
-        namaTamu.innerText = escapeHtml(name);
-        // document.getElementById("formnama").value = name;
-      }
-  
-      setInterval(() => {
-        if (modal.classList.contains("hidden")) {
-          modal.classList.replace("hidden", "fixed");
-        }
-      }, 2000);
-      opacity();
+  })();
+
+  return {
+    stop: () => {
+      stop = true;
+      setNum(100.0);
     },
-    false,
-  );
+  };
+})();
+
+const opacity = () => {
+  let modal = new Promise((res) => {
+    let clear = null;
+    clear = setInterval(() => {
+      if (document.getElementById("dialog").classList.contains("fixed")) {
+        clearInterval(clear);
+        res();
+      }
+    }, 100);
+  });
+
+  modal.then(() => {
+    progressBar.stop();
+
+    let op = parseInt(document.getElementById("loadPage").style.opacity);
+    let clear = null;
+
+    clear = setInterval(() => {
+      if (op >= 0) {
+        op -= 0.025;
+        document.getElementById("loadPage").style.opacity = op;
+      } else {
+        clearInterval(clear);
+        // document.getElementById("loadPage").remove();
+        // document.getElementById("dialog").classList.add("animate-fade");
+      }
+    }, 10);
+  });
+};
+
+const login = async () => {
+  let body = document.querySelector("body");
+
+  await fetch(
+    getUrl("/api/session"),
+    parseRequest("POST", null, {
+      email: body.getAttribute("data-email"),
+      password: body.getAttribute("data-password"),
+    })
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code == 200) {
+        localStorage.removeItem("token");
+        localStorage.setItem("token", res.data.token);
+        comment.ucapan();
+        return;
+      }
+
+      if (res.error.length != 0) {
+        alert("Terdapat kesalahan, " + res.error[0]);
+        window.location.reload();
+        return;
+      }
+    })
+    .catch((err) => {
+      alert(`Terdapat kesalahan: ${err}, otomatis reload halaman`);
+      window.location.reload();
+      return;
+    });
+};
+window.login = login;
+
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+  if (document.getElementById("loadPage").classList.contains("hidden")) {
+    document.getElementById("loadPage").classList.remove("hidden");
+  }
+};
+
+window.addEventListener(
+  "load",
+  async () => {
+    let modal = document.getElementById("dialog");
+    let name = new URLSearchParams(window.location.search).get("to") ?? "";
+
+    if (name.length == 0) {
+      document.getElementById("tujuan-tamu").remove();
+    } else {
+      let namaTamu = document.getElementById("nama-tamu");
+      namaTamu.innerText = escapeHtml(name);
+      // document.getElementById("formnama").value = name;
+    }
+
+    setInterval(() => {
+      if (modal.classList.contains("hidden")) {
+        modal.classList.replace("hidden", "fixed");
+      }
+    }, 2000);
+    opacity();
+  },
+  false
+);

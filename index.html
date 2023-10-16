@@ -392,6 +392,7 @@
     <section id="wish" class="flex flex-col items-center bg-primary-Olive">
       <div class="flex flex-col items-center gap-9 px-6 pb-10 pt-10">
         <!-- tanda kasih -->
+
         <div
           class="taos:translate-y-[25px] taos:opacity-0 flex flex-col items-center gap-6 duration-[1000ms]"
           data-taos-offset="200"
@@ -403,6 +404,7 @@
             Tanpa mengurangi rasa hormat, bagi Anda yang ingin memberikan tanda
             kasih untuk kami, dapat melalui:
           </p>
+
           <div
             id="account-no"
             class="flex w-full max-w-107 flex-col items-center gap-5 rounded-4xl bg-neutral-White px-6 py-6"
@@ -488,7 +490,7 @@
                 <select
                   name="kehadiran"
                   id="kehadiran"
-                  onchange="enableGuestNum()"
+                  onchange="comment.enableGuestNum()"
                   class="Body h-32.2 w-full rounded-lg border border-solid border-secondary-Brl-03 bg-white px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
                 >
                   <option selected value="not-selected" id="pilih-kehadiran">
@@ -532,66 +534,91 @@
                 class="Body w-full rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 focus:border-primary-OlderSage focus:outline-none focus:ring-2 focus:ring-primary-MatchaFade"
               ></textarea>
             </div>
-            <div class="w-full">
-              <button
-                id="submit-wish"
-                class="BodyBold w-full rounded-xl bg-secondary-Brl-03 px-3 py-2 text-center text-neutral-White hover:bg-secondary-Brl-04"
-                onclick="sendWish()"
-              >
-                Kirim
-              </button>
+
+            <!--Button Kirim Edit Bataledit-->
+            <div class="flex w-full">
+              <div class="w-full">
+                <button
+                  id="submit-wish"
+                  class="BodyBold w-full rounded-xl bg-secondary-Brl-03 px-3 py-2 text-center text-neutral-White hover:bg-secondary-Brl-04"
+                  onclick="comment.kirim()"
+                >
+                  Kirim
+                </button>
+                <div class="flex w-full gap-2">
+                  <button
+                    id="batal"
+                    class="BodyBold w-full rounded-xl border border-secondary-Brl-03 px-3 py-2 text-center text-secondary-Brl-03 hover:bg-secondary-Brl-04"
+                    onclick="comment.batal()"
+                    style="display: none"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    id="ubah"
+                    class="BodyBold w-full rounded-xl bg-secondary-Brl-03 px-3 py-2 text-center text-neutral-White hover:bg-secondary-Brl-04"
+                    onclick="comment.ubah()"
+                    style="display: none"
+                  >
+                    Kirim
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
+        <!--DIV OKE SAMPE SINI-->
         <!-- ucapan doa -->
-        <div id="wishes" class="flex flex-col w-full gap-4">
+        <div id="wishes" class="flex w-full flex-col gap-4">
           <!-- card wish -->
 
-            <button
+          <!-- <button
               id="balas"
               class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
               href="#"
               onclick=""
             >
               Balas
-            </button>
-          </div>
+            </button> -->
+
           <!-- button -->
-          <div
-            class="taos:translate-y-[25px] taos:opacity-0 flex items-center duration-[1000ms]"
-            data-taos-offset="100"
+        </div>
+        <div
+          class="taos:translate-y-[25px] taos:opacity-0 hidden items-center duration-[1000ms]"
+          data-taos-offset="100"
+          id="page-navigation"
+        >
+          <button
+            id="sebelumnya"
+            class="BodyBold inline-flex items-center gap-2 rounded-l-xl border-r-2 border-r-secondary-Brl-02 bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04 disabled:bg-neutral-Grey"
+            onclick="pagination.previous(this)"
+            disabled
           >
-            <button
-              id="sebelumnya"
-              class="BodyBold inline-flex items-center rounded-l-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04 gap-2 border-r-2 border-r-secondary-Brl-02"
-              href="#"
-              onclick=""
-            >
-              <img
-                id="sebelumnya"
-                src="assets/icons/arrow-left.svg"
-                class="h-4 w-4"
-                alt="envelope-open"
-              />
-              Sebelumnya
-            </button>
-            <div class="BodyBold inline-flex items-center bg-secondary-Brl-03 px-3 py-2 text-neutral-White border-r-secondary-Brl-02">1 dari 10</div>
-            <button
-              id="selanjutnya"
-              class="BodyBold inline-flex items-center rounded-r-xl bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04 gap-2 border-l-2 border-l-secondary-Brl-02"
-              href="#"
-              onclick=""
-            >
-             Selanjutnya
-              <img
-                id="selanjutnya"
-                src="assets/icons/arrow-right.svg"
-                class="h-4 w-4"
-                alt="envelope-open"
-              />
-            </button>
+            <img
+              src="assets/icons/arrow-left.svg"
+              class="h-4 w-4"
+              alt="envelope-open"
+            />
+            Sebelumnya
+          </button>
+          <div
+            class="BodyBold inline-flex items-center border-r-secondary-Brl-02 bg-secondary-Brl-03 px-3 py-2 text-neutral-White"
+            id="page"
+          >
+            1 dari 10
           </div>
+          <button
+            id="selanjutnya"
+            class="BodyBold inline-flex items-center gap-2 rounded-r-xl border-l-2 border-l-secondary-Brl-02 bg-secondary-Brl-03 px-3 py-2 text-neutral-White hover:bg-secondary-Brl-04 disabled:bg-neutral-Grey"
+            onclick="pagination.next(this)"
+          >
+            Selanjutnya
+            <img
+              src="assets/icons/arrow-right.svg"
+              class="h-4 w-4"
+              alt="envelope-open"
+            />
+          </button>
         </div>
       </div>
       <div>

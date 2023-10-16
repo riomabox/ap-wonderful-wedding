@@ -198,16 +198,16 @@ window.copyText = copyText;
 
 
 
-const enableGuestNum = () => {
-  if (kehadiran.value === "present") {
-    jumlahOrang.disabled = false;
-    jumlahOrang.style.borderColor = "#B49349";
-  } else {
-    jumlahOrang.disabled = true;
-    jumlahOrang.style.borderColor = "#B8B2A4";
-  }
-};
-window.enableGuestNum = enableGuestNum;
+// const enableGuestNum = () => {
+//   if (kehadiran.value === "present") {
+//     jumlahOrang.disabled = false;
+//     jumlahOrang.style.borderColor = "#B49349";
+//   } else {
+//     jumlahOrang.disabled = true;
+//     jumlahOrang.style.borderColor = "#B8B2A4";
+//   }
+// };
+// window.enableGuestNum = enableGuestNum;
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_API_KEY_GMAPS,
@@ -313,12 +313,13 @@ const pagination = (() => {
   let prev = document.getElementById('sebelumnya');
   let next = document.getElementById('selanjutnya');
 
+
   let disabledPrevious = () => {
-      prev.classList.add('disabled');
+      prev.disabled = true;
   };
 
   let disabledNext = () => {
-      next.classList.add('disabled');
+      next.disabled = true;
   };
 
   let buttonAction = async (button) => {
@@ -326,9 +327,13 @@ const pagination = (() => {
       button.disabled = true;
       button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
       await comment.ucapan();
-      document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
+      if (resultData < perPage || pageNow <= 0) {
+        button.disabled = true;
+    } else {
       button.disabled = false;
-      button.innerHTML = tmp;
+    }
+     button.innerHTML = tmp;
   };
 
   return {
@@ -342,7 +347,7 @@ const pagination = (() => {
           pageNow = 0;
           resultData = 0;
           page.innerText = 1;
-          next.classList.remove('disabled');
+          next.disabled = false;
           await comment.ucapan();
           disabledPrevious();
       },
@@ -360,7 +365,7 @@ const pagination = (() => {
               disabledNext();
               await buttonAction(button);
               page.innerText = parseInt(page.innerText) - 1;
-              next.classList.remove('disabled');
+              next.disabled = false;
               if (pageNow <= 0) {
                   disabledPrevious();
               }
@@ -374,77 +379,134 @@ const pagination = (() => {
               disabledPrevious();
               await buttonAction(button);
               page.innerText = parseInt(page.innerText) + 1;
-              prev.classList.remove('disabled');
+              prev.disabled = false;
           }
-      }
+      },
   };
 })();
+window.pagination = pagination;
 
 const comment = (() => {
   const nama = document.getElementById('nama');
-  const kehadiran = document.getElementById('form-kehadiran');
+  const kehadiran = document.getElementById('kehadiran');
   const jumlahOrang = document.getElementById("jml-orang");
   const formUcapan = document.getElementById("form-ucapan");
   const submitWish = document.getElementById('submit-wish');
   const balas = document.getElementById('balas');
-  // const batal = document.getElementById('batal');
-  // const sunting = document.getElementById('ubah');
+  const batal = document.getElementById('batal');
+  const sunting = document.getElementById('ubah');
   let tempID = null;
-
-
-  //variabel aghniputro
-
 
 
   // OK
   const resetForm = () => {
       submitWish.style.display = 'block';
       kehadiran.style.display = 'block';
-      // batal.style.display = 'none';
-      balas.style.display = 'none';
-      // sunting.style.display = 'none';
+      batal.style.display = 'none';
+      // balas.style.display = 'none';
+      sunting.style.display = 'none';
       jumlahOrang.style.display='block';
       document.getElementById('label-konfirmasi').style.display = 'block';
       document.getElementById('balasan').innerHTML = null;
       nama.value = null;
-      kehadiran.value = 0;
+      kehadiran.value = 'not-selected';
       jumlahOrang.value = null;
       formUcapan.value = null;
       nama.disabled = false;
-      hadiran.disabled = false;
+      kehadiran.disabled = false;
       formUcapan.disabled = false;
 
   };
 
+  const enableGuestNum = () => {
+    if (kehadiran.value === "present") {
+      jumlahOrang.disabled = false;
+      jumlahOrang.style.borderColor = "#B49349";
+    } else {
+      jumlahOrang.disabled = true;
+      jumlahOrang.style.borderColor = "#B8B2A4";
+    }
+  };
+  
+
   // OK
-  const sendWish = () => {
+  const sendWish = async () => { 
+    let flagForm = true;
+    let token = localStorage.getItem('token') ?? '';
+    
     if (nama.value.length === 0) {
       alert("Silahkan isi nama");
+      flagForm = false;
     } else if (nama.value.length >= 50) {
       alert("Nama tidak boleh melebihi 50 karakter");
+      flagForm = false;
     }
 
     if (kehadiran.value === "not-selected") {
       alert("Silahkan isi kehadiran");
+      flagForm = false;
     }
 
-    if (jumlahOrang.value.length === 0) {
-      alert("Silahkan isi jumlah kehadiran");
-    } else if (jumlahOrang.value >= 10) {
-      alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 10 orang");
+    if (kehadiran.value === 'present') {
+      if (jumlahOrang.value.length === 0) {
+        alert("Silahkan isi jumlah kehadiran");
+        flagForm = false;
+      } else if (jumlahOrang.value > 10) {
+        alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 10 orang");
+        flagForm = false;
+      }
     }
 
-    if (ucapan.value.length === 0) {
+    if (formUcapan.value.length === 0) {
       alert("Silahkan isi ucapan dan doa");
+      flagForm = false;
     }
 
     nama.disabled = true;
     kehadiran.disabled = true;
     jumlahOrang.disabled = true;
-    ucapan.disabled = true;
+    formUcapan.disabled = true;
     submitWish.disabled = true;
+
+    let tmp = submitWish.innerHTML;
+    submitWish.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+
+    let isSuccess = false;
+
+    if (flagForm === true) {
+      await request('POST', '/api/comment')
+      .token(token)
+      .body({
+          nama: nama.value,
+          hadir: kehadiran.value == 'present',
+          komentar: formUcapan.value,
+      })
+      .then((res) => {
+          if (res.code == 201) {
+              owns.set(res.data.uuid, res.data.own);
+              isSuccess = true;
+          }
+      })
+      .catch((err) => {
+          alert(`Terdapat kesalahan: ${err}`);
+      });
+    } else {
+      nama.disabled = false;
+      kehadiran.disabled = false;
+      jumlahOrang.disabled = false;
+      formUcapan.disabled = false;
+    }
+
+    if (isSuccess) {
+        await pagination.reset();
+        document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
+        resetForm();
+    } 
+    submitWish.disabled = false;
+    submitWish.innerHTML = tmp;
   };
 
+    
 
   //COMMENTED, EDIT LATER
   // OK
@@ -507,27 +569,21 @@ const comment = (() => {
   const innerComment = (data) => {
       return `
       <div class="flex items-center gap-2">
+
         <button
-        id="balas"
+        id="ubah"
+        data-uuid="${data.uuid}"
         class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
-        href="#"
-        onclick=""
+        onclick="comment.edit(this)"
         >
-          Balas
+          Ubah
         </button>
-        <button
-        id="edit"
-        class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
-        href="#"
-        onclick=""
-        >
-          Edit
-        </button>
+
         <button
         id="hapus"
+        data-uuid="${data.uuid}"
         class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
-        href="#"
-        onclick=""
+        onclick="comment.hapus(this)"
         >
           Hapus
         </button>
@@ -585,9 +641,11 @@ const comment = (() => {
 `;
       return DIV;
   };
+  
 
   // OK
   const ucapan = async () => {
+      const pageNav = document.getElementById('page-navigation');
       const WISHES = document.getElementById('wishes');
       WISHES.innerHTML = renderLoading(pagination.getPer());
 
@@ -605,6 +663,7 @@ const comment = (() => {
                   WISHES.innerHTML = null;
                   res.data.forEach((data) => WISHES.appendChild(renderCard(data)));
                   pagination.setResultData(res.data.length);
+                  pageNav.style.display= 'flex';
 
                   if (res.data.length == 0) {
                       WISHES.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
@@ -707,162 +766,161 @@ const comment = (() => {
   // };
 
   // OK
-  // const ubah = async () => {
-  //     let token = localStorage.getItem('token') ?? '';
-  //     let id = sunting.getAttribute('data-uuid');
-  //     let hadir = hadiran.value;
-  //     let komentar = formpesan.value;
+  const ubah = async () => {
+      let token = localStorage.getItem('token') ?? '';
+      let id = sunting.getAttribute('data-uuid');
+      let hadir = kehadiran.value;
+      let komentar = formUcapan.value;
 
-  //     if (token.length == 0) {
-  //         alert('Terdapat kesalahan, token kosong !');
-  //         window.location.reload();
-  //         return;
-  //     }
+      if (token.length == 0) {
+          alert('Terdapat kesalahan, token kosong !');
+          window.location.reload();
+          return;
+      }
 
-  //     if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
-  //         alert('silahkan pilih kehadiran');
-  //         return;
-  //     }
+      if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
+          alert('silahkan pilih kehadiran');
+          return;
+      }
 
-  //     if (komentar.length == 0) {
-  //         alert('pesan tidak boleh kosong');
-  //         return;
-  //     }
+      if (komentar.length == 0) {
+          alert('pesan tidak boleh kosong');
+          return;
+      }
 
-  //     hadiran.disabled = true;
-  //     formpesan.disabled = true;
+      kehadiran.disabled = true;
+      formUcapan.disabled = true;
 
-  //     sunting.disabled = true;
-  //     batal.disabled = true;
-  //     let tmp = sunting.innerHTML;
-  //     sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+      sunting.disabled = true;
+      batal.disabled = true;
+      let tmp = sunting.innerHTML;
+      sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-  //     let isSuccess = false;
-  //     await request('PUT', '/api/comment/' + owns.get(id))
-  //         .body({
-  //             hadir: parseInt(hadir) == 1,
-  //             komentar: komentar
-  //         })
-  //         .token(token)
-  //         .then((res) => {
-  //             if (res.data.status) {
-  //                 isSuccess = true;
-  //             }
-  //         })
-  //         .catch((err) => {
-  //             alert(`Terdapat kesalahan: ${err}`);
-  //         });
+      let isSuccess = false;
+      await request('PUT', '/api/comment/' + owns.get(id))
+          .body({
+              hadir: kehadiran.value == 'present',
+              komentar: komentar
+          })
+          .token(token)
+          .then((res) => {
+              if (res.data.status) {
+                  isSuccess = true;
+              }
+          })
+          .catch((err) => {
+              alert(`Terdapat kesalahan: ${err}`);
+          });
 
-  //     if (isSuccess) {
-  //         await ucapan();
-  //         document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //         resetForm();
-  //     }
+      if (isSuccess) {
+          await ucapan();
+          document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+          resetForm();
+      }
 
-  //     sunting.innerHTML = tmp;
-  //     sunting.disabled = false;
-  //     batal.disabled = false;
-  //     hadiran.disabled = false;
-  //     formpesan.disabled = false;
-  // };
-
-  // OK
-  // const hapus = async (button) => {
-  //     if (!confirm('Kamu yakin ingin menghapus?')) {
-  //         return;
-  //     }
-
-  //     let token = localStorage.getItem('token') ?? '';
-  //     let id = button.getAttribute('data-uuid');
-
-  //     if (token.length == 0) {
-  //         alert('Terdapat kesalahan, token kosong !');
-  //         window.location.reload();
-  //         return;
-  //     }
-
-  //     button.disabled = true;
-  //     let tmp = button.innerText;
-  //     button.innerText = 'Loading..';
-
-  //     let isSuccess = false;
-  //     await request('DELETE', '/api/comment/' + owns.get(id))
-  //         .token(token)
-  //         .then((res) => {
-  //             if (res.data.status) {
-  //                 owns.unset(id);
-  //                 isSuccess = true;
-  //             }
-  //         })
-  //         .catch((err) => {
-  //             alert(`Terdapat kesalahan: ${err}`);
-  //         });
-
-  //     button.innerText = tmp;
-  //     button.disabled = false;
-
-  //     if (isSuccess) {
-  //         ucapan();
-  //     }
-  // };
+      sunting.innerHTML = tmp;
+      sunting.disabled = false;
+      batal.disabled = false;
+      kehadiran.disabled = false;
+      formUcapan.disabled = false;
+  };
 
   // OK
-  // const edit = async (button) => {
-  //     button.disabled = true;
-  //     let tmp = button.innerText;
-  //     button.innerText = 'Loading...';
+  const hapus = async (button) => {
+      if (!confirm('Kamu yakin ingin menghapus?')) {
+          return;
+      }
 
-  //     let id = button.getAttribute('data-uuid').toString();
-  //     let token = localStorage.getItem('token') ?? '';
+      let token = localStorage.getItem('token') ?? '';
+      let id = button.getAttribute('data-uuid');
 
-  //     if (token.length == 0) {
-  //         alert('Terdapat kesalahan, token kosong !');
-  //         window.location.reload();
-  //         return;
-  //     }
+      if (token.length == 0) {
+          alert('Terdapat kesalahan, token kosong !');
+          window.location.reload();
+          return;
+      }
 
-  //     await request('GET', '/api/comment/' + id)
-  //         .token(token)
-  //         .then((res) => {
-  //             if (res.code == 200) {
-  //                 tempID = id;
-  //                 batal.style.display = 'block';
-  //                 sunting.style.display = 'block';
-  //                 kirim.style.display = 'none';
-  //                 sunting.setAttribute('data-uuid', id);
-  //                 formpesan.value = res.data.komentar;
-  //                 formnama.value = res.data.nama;
-  //                 formnama.disabled = true;
+      button.disabled = true;
+      let tmp = button.innerText;
+      button.innerText = 'Loading..';
 
-  //                 if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
-  //                     document.getElementById('label-kehadiran').style.display = 'none';
-  //                     hadiran.style.display = 'none';
-  //                 } else {
-  //                     hadiran.value = res.data.hadir ? 1 : 2;
-  //                     document.getElementById('label-kehadiran').style.display = 'block';
-  //                     hadiran.style.display = 'block';
-  //                 }
+      let isSuccess = false;
+      await request('DELETE', '/api/comment/' + owns.get(id))
+          .token(token)
+          .then((res) => {
+              if (res.data.status) {
+                  owns.unset(id);
+                  isSuccess = true;
+              }
+          })
+          .catch((err) => {
+              alert(`Terdapat kesalahan: ${err}`);
+          });
 
-  //                 document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
-  //             }
-  //         })
-  //         .catch((err) => {
-  //             alert(`Terdapat kesalahan: ${err}`);
-  //         });
+      button.innerText = tmp;
+      button.disabled = false;
 
-  //     button.disabled = false;
-  //     button.innerText = tmp;
-  // };
+      if (isSuccess) {
+          ucapan();
+      }
+  };
+
+  // OK
+  const edit = async (button) => {
+      button.disabled = true;
+      let tmp = button.innerText;
+      button.innerText = 'Loading...';
+
+      let id = button.getAttribute('data-uuid').toString();
+      let token = localStorage.getItem('token') ?? '';
+
+      if (token.length == 0) {
+          alert('Terdapat kesalahan, token kosong !');
+      }
+
+      await request('GET', '/api/comment/' + id)
+          .token(token)
+          .then((res) => {
+              if (res.code == 200) {
+                  tempID = id;
+                  batal.style.display = 'block';
+                  sunting.style.display = 'block';
+                  submitWish.style.display = 'none';
+                  sunting.setAttribute('data-uuid', id);
+                  formUcapan.value = res.data.komentar;
+                  nama.value = res.data.nama;
+                  kehadiran.value = res.data.hadir === '1' ? 'present' : 'absent';
+                  nama.disabled = true;
+
+                  if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
+                      document.getElementById('label-kehadiran').style.display = 'none';
+                      kehadiran.style.display = 'none';
+                  } else {
+                      kehadiran.value = res.data.hadir ? 1 : 2;
+                      document.getElementById('label-kehadiran').style.display = 'block';
+                      kehadiran.style.display = 'block';
+                  }
+                  document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
+              }
+          })
+          .catch((err) => {
+              alert(`Terdapat kesalahan: ${err}`);
+          });
+
+      button.disabled = false;
+      button.innerText = tmp;
+  };
 
   // OK
   return {
+      enableGuestNum: enableGuestNum,
       ucapan: ucapan,
       kirim: sendWish,
       render: renderLoading,
 
-      // hapus: hapus,
-      // edit: edit,
-      // ubah: ubah,
+      hapus: hapus,
+      edit: edit,
+      ubah: ubah,
 
       // balasan: balasan,
       // reply: reply,
@@ -875,6 +933,7 @@ const comment = (() => {
       },
   };
 })();
+window.comment = comment;
 
 const storage = (table) => ((table) => {
 
@@ -974,7 +1033,6 @@ const login = async () => {
               localStorage.removeItem('token');
               localStorage.setItem('token', res.data.token);
               comment.ucapan();
-              console.log('yeey');
           }
       })
       .catch((err) => {

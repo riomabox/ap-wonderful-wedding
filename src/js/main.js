@@ -448,6 +448,10 @@ const comment = (() => {
       return;
     }
 
+    if (kehadiran.value === "absent") {
+      jumlahOrang.value = null;
+    }
+
     if (kehadiran.value === "present") {
       if (jumlahOrang.value.length === 0) {
         alert("Silahkan isi jumlah kehadiran");
@@ -784,6 +788,7 @@ const comment = (() => {
     let token = localStorage.getItem("token") ?? "";
     let id = sunting.getAttribute("data-uuid");
     let hadir = kehadiran.value;
+    let jumlah = jumlahOrang.value;
     let komentar = formUcapan.value;
 
     if (token.length == 0) {
@@ -792,20 +797,34 @@ const comment = (() => {
       return;
     }
 
-    if (
-      document.getElementById(id).getAttribute("data-parent") === "true" &&
-      hadir == 0
-    ) {
-      alert("silahkan pilih kehadiran");
-      return;
-    }
+    if (document.getElementById(id).getAttribute("data-parent") === "true") {
+      if (hadir === "not-selected") {
+        alert("Silahkan isi kehadiran");
+        return;
+      }
 
+      if (hadir === "absent") {
+        jumlahOrang.value = null;
+        jumlah = null;
+      }
+
+      if (kehadiran.value === "present") {
+        if (jumlah.length === 0) {
+          alert("Silahkan isi jumlah kehadiran");
+          return;
+        } else if (jumlah > 10) {
+          alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 10 orang");
+          return;
+        }
+      }
+    }
     if (komentar.length == 0) {
-      alert("pesan tidak boleh kosong");
+      alert("Silahkan isi ucapan dan doa");
       return;
     }
 
     kehadiran.disabled = true;
+    jumlahOrang.disabled = true;
     formUcapan.disabled = true;
 
     sunting.disabled = true;
@@ -817,7 +836,8 @@ const comment = (() => {
     await request("PUT", "/api/comment/" + owns.get(id))
       .body({
         hadir: kehadiran.value == "present",
-        komentar: komentar,
+        komentar,
+        jumlah,
       })
       .token(token)
       .then((res) => {
@@ -841,6 +861,7 @@ const comment = (() => {
     sunting.disabled = false;
     batal.disabled = false;
     kehadiran.disabled = false;
+    jumlahOrang.disabled = false;
     formUcapan.disabled = false;
   };
 
@@ -924,6 +945,9 @@ const comment = (() => {
             jumlahOrang.value = res.data.jumlah;
             document.getElementById("label-jumlah").style.display = "block";
             jumlahOrang.style.display = "block";
+            kehadiran.value === "present"
+              ? (jumlahOrang.disabled = false)
+              : (jumlahOrang.disabled = true);
           }
           document
             .getElementById("wishes")

@@ -629,9 +629,8 @@ const comment = (() => {
     DIV.innerHTML = `
       <div
       class="taos:translate-y-[25px] taos:op acity-0 flex w-full max-w-107 flex-col items-start gap-4 rounded-4xl bg-neutral-White px-6 py-5 duration-[1000ms]"
-      data-taos-offset="100" id="${data.uuid}"
+      data-taos-offset="100" data-parent="true" id="${data.uuid}"
       >
-
         <div class="flex w-full items-center justify-between gap-16">
           <div class="flex items-center gap-2">
             <p class="BodyBold text-neutral-Black">${escapeHtml(data.nama)}</p>
@@ -909,18 +908,22 @@ const comment = (() => {
           sunting.setAttribute("data-uuid", id);
           formUcapan.value = res.data.komentar;
           nama.value = res.data.nama;
-          kehadiran.value = res.data.hadir === "1" ? "present" : "absent";
           nama.disabled = true;
 
           if (
             document.getElementById(id).getAttribute("data-parent") !== "true"
           ) {
-            document.getElementById("label-kehadiran").style.display = "none";
+            document.getElementById("label-konfirmasi").style.display = "none";
             kehadiran.style.display = "none";
+            document.getElementById("label-jumlah").style.display = "none";
+            jumlahOrang.style.display = "none";
           } else {
-            kehadiran.value = res.data.hadir ? 1 : 2;
-            document.getElementById("label-kehadiran").style.display = "block";
+            kehadiran.value = res.data.hadir ? "present" : "absent";
+            document.getElementById("label-konfirmasi").style.display = "block";
             kehadiran.style.display = "block";
+            jumlahOrang.value = res.data.jumlah;
+            document.getElementById("label-jumlah").style.display = "block";
+            jumlahOrang.style.display = "block";
           }
           document
             .getElementById("wishes")

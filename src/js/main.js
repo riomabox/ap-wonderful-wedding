@@ -4,9 +4,8 @@ import viteLogo from "../../assets/icons/vite.svg";
 import { setupCounter } from "./counter.js";
 import { Loader } from "@googlemaps/js-api-loader";
 
-
 const root = document.getElementsByTagName("html")[0];
-root.setAttribute('class', 'bg-primary-SageBase')
+root.setAttribute("class", "bg-primary-SageBase");
 
 const audio = (() => {
   let instance = null;
@@ -119,19 +118,19 @@ const bukaUndangan = async () => {
     undanganTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
-      "animate-once"
+      "animate-once",
     );
     namaTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
       "animate-once",
-      "animate-delay-[700ms]"
+      "animate-delay-[700ms]",
     );
     tanggalTitle.classList.add(
       "animate-fade-up",
       "animate-duration-1000",
       "animate-once",
-      "animate-delay-[1400ms]"
+      "animate-delay-[1400ms]",
     );
     audio.play();
     await login();
@@ -162,16 +161,16 @@ const bukaUndangan = async () => {
       }
 
       document.getElementById("hari").innerHTML = Math.floor(
-        distance / (1000 * 60 * 60 * 24)
+        distance / (1000 * 60 * 60 * 24),
       );
       document.getElementById("jam").innerHTML = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
       document.getElementById("menit").innerHTML = Math.floor(
-        (distance % (1000 * 60 * 60)) / (1000 * 60)
+        (distance % (1000 * 60 * 60)) / (1000 * 60),
       );
       document.getElementById("detik").innerHTML = Math.floor(
-        (distance % (1000 * 60)) / 1000
+        (distance % (1000 * 60)) / 1000,
       );
     }, 1000);
   };
@@ -195,8 +194,6 @@ const copyText = (button) => {
   }, 1500);
 };
 window.copyText = copyText;
-
-
 
 // const enableGuestNum = () => {
 //   if (kehadiran.value === "present") {
@@ -304,118 +301,114 @@ const opacity = () => {
 };
 
 const pagination = (() => {
-
   const perPage = 10;
   let pageNow = 0;
   let resultData = 0;
 
-  let page = document.getElementById('page');
-  let prev = document.getElementById('sebelumnya');
-  let next = document.getElementById('selanjutnya');
-
+  let page = document.getElementById("page");
+  let prev = document.getElementById("sebelumnya");
+  let next = document.getElementById("selanjutnya");
 
   let disabledPrevious = () => {
-      prev.disabled = true;
+    prev.disabled = true;
   };
 
   let disabledNext = () => {
-      next.disabled = true;
+    next.disabled = true;
   };
 
   let buttonAction = async (button) => {
-      let tmp = button.innerHTML;
+    let tmp = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+    await comment.ucapan();
+    document.getElementById("wishes").scrollIntoView({ behavior: "smooth" });
+    if (resultData < perPage || pageNow <= 0) {
       button.disabled = true;
-      button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
-      await comment.ucapan();
-      document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
-      if (resultData < perPage || pageNow <= 0) {
-        button.disabled = true;
     } else {
       button.disabled = false;
     }
-     button.innerHTML = tmp;
+    button.innerHTML = tmp;
   };
 
   return {
-      getPer: () => {
-          return perPage;
-      },
-      getNext: () => {
-          return pageNow;
-      },
-      reset: async () => {
-          pageNow = 0;
-          resultData = 0;
-          page.innerText = 1;
-          next.disabled = false;
-          await comment.ucapan();
+    getPer: () => {
+      return perPage;
+    },
+    getNext: () => {
+      return pageNow;
+    },
+    reset: async () => {
+      pageNow = 0;
+      resultData = 0;
+      page.innerText = 1;
+      next.disabled = false;
+      await comment.ucapan();
+      disabledPrevious();
+    },
+    setResultData: (len) => {
+      resultData = len;
+      if (resultData < perPage) {
+        disabledNext();
+      }
+    },
+    previous: async (button) => {
+      if (pageNow < 0) {
+        disabledPrevious();
+      } else {
+        pageNow -= perPage;
+        disabledNext();
+        await buttonAction(button);
+        page.innerText = parseInt(page.innerText) - 1;
+        next.disabled = false;
+        if (pageNow <= 0) {
           disabledPrevious();
-      },
-      setResultData: (len) => {
-          resultData = len;
-          if (resultData < perPage) {
-              disabledNext();
-          }
-      },
-      previous: async (button) => {
-          if (pageNow < 0) {
-              disabledPrevious();
-          } else {
-              pageNow -= perPage;
-              disabledNext();
-              await buttonAction(button);
-              page.innerText = parseInt(page.innerText) - 1;
-              next.disabled = false;
-              if (pageNow <= 0) {
-                  disabledPrevious();
-              }
-          }
-      },
-      next: async (button) => {
-          if (resultData < perPage) {
-              disabledNext();
-          } else {
-              pageNow += perPage;
-              disabledPrevious();
-              await buttonAction(button);
-              page.innerText = parseInt(page.innerText) + 1;
-              prev.disabled = false;
-          }
-      },
+        }
+      }
+    },
+    next: async (button) => {
+      if (resultData < perPage) {
+        disabledNext();
+      } else {
+        pageNow += perPage;
+        disabledPrevious();
+        await buttonAction(button);
+        page.innerText = parseInt(page.innerText) + 1;
+        prev.disabled = false;
+      }
+    },
   };
 })();
 window.pagination = pagination;
 
 const comment = (() => {
-  const nama = document.getElementById('nama');
-  const kehadiran = document.getElementById('kehadiran');
+  const nama = document.getElementById("nama");
+  const kehadiran = document.getElementById("kehadiran");
   const jumlahOrang = document.getElementById("jml-orang");
   const formUcapan = document.getElementById("form-ucapan");
-  const submitWish = document.getElementById('submit-wish');
-  const balas = document.getElementById('balas');
-  const batal = document.getElementById('batal');
-  const sunting = document.getElementById('ubah');
+  const submitWish = document.getElementById("submit-wish");
+  const balas = document.getElementById("balas");
+  const batal = document.getElementById("batal");
+  const sunting = document.getElementById("ubah");
   let tempID = null;
-
 
   // OK
   const resetForm = () => {
-      submitWish.style.display = 'block';
-      kehadiran.style.display = 'block';
-      batal.style.display = 'none';
-      // balas.style.display = 'none';
-      sunting.style.display = 'none';
-      jumlahOrang.style.display='block';
-      document.getElementById('label-konfirmasi').style.display = 'block';
-      document.getElementById('balasan').innerHTML = null;
-      nama.value = null;
-      kehadiran.value = 'not-selected';
-      jumlahOrang.value = null;
-      formUcapan.value = null;
-      nama.disabled = false;
-      kehadiran.disabled = false;
-      formUcapan.disabled = false;
-
+    submitWish.style.display = "block";
+    kehadiran.style.display = "block";
+    batal.style.display = "none";
+    // balas.style.display = 'none';
+    sunting.style.display = "none";
+    jumlahOrang.style.display = "block";
+    document.getElementById("label-konfirmasi").style.display = "block";
+    document.getElementById("balasan").innerHTML = null;
+    nama.value = null;
+    kehadiran.value = "not-selected";
+    jumlahOrang.value = null;
+    formUcapan.value = null;
+    nama.disabled = false;
+    kehadiran.disabled = false;
+    formUcapan.disabled = false;
   };
 
   const enableGuestNum = () => {
@@ -427,39 +420,50 @@ const comment = (() => {
       jumlahOrang.style.borderColor = "#B8B2A4";
     }
   };
-  
 
   // OK
-  const sendWish = async () => { 
+  const sendWish = async () => {
     let flagForm = true;
-    let token = localStorage.getItem('token') ?? '';
-    
+    let token = localStorage.getItem("token") ?? "";
+
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong !");
+      window.location.reload();
+      return;
+    }
+
     if (nama.value.length === 0) {
       alert("Silahkan isi nama");
       flagForm = false;
+      return;
     } else if (nama.value.length >= 50) {
       alert("Nama tidak boleh melebihi 50 karakter");
       flagForm = false;
+      return;
     }
 
     if (kehadiran.value === "not-selected") {
       alert("Silahkan isi kehadiran");
       flagForm = false;
+      return;
     }
 
-    if (kehadiran.value === 'present') {
+    if (kehadiran.value === "present") {
       if (jumlahOrang.value.length === 0) {
         alert("Silahkan isi jumlah kehadiran");
         flagForm = false;
+        return;
       } else if (jumlahOrang.value > 10) {
         alert("Mohon maaf, jumlah kehadiran tidak boleh lebih dari 10 orang");
         flagForm = false;
+        return;
       }
     }
 
     if (formUcapan.value.length === 0) {
       alert("Silahkan isi ucapan dan doa");
       flagForm = false;
+      return;
     }
 
     nama.disabled = true;
@@ -474,22 +478,23 @@ const comment = (() => {
     let isSuccess = false;
 
     if (flagForm === true) {
-      await request('POST', '/api/comment')
-      .token(token)
-      .body({
+      await request("POST", "/api/comment")
+        .token(token)
+        .body({
           nama: nama.value,
-          hadir: kehadiran.value == 'present',
+          hadir: kehadiran.value == "present",
           komentar: formUcapan.value,
-      })
-      .then((res) => {
+          jumlah: jumlahOrang.value,
+        })
+        .then((res) => {
           if (res.code == 201) {
-              owns.set(res.data.uuid, res.data.own);
-              isSuccess = true;
+            owns.set(res.data.uuid, res.data.own);
+            isSuccess = true;
           }
-      })
-      .catch((err) => {
+        })
+        .catch((err) => {
           alert(`Terdapat kesalahan: ${err}`);
-      });
+        });
     } else {
       nama.disabled = false;
       kehadiran.disabled = false;
@@ -498,15 +503,13 @@ const comment = (() => {
     }
 
     if (isSuccess) {
-        await pagination.reset();
-        document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
-        resetForm();
-    } 
+      await pagination.reset();
+      document.getElementById("wishes").scrollIntoView({ behavior: "smooth" });
+      resetForm();
+    }
     submitWish.disabled = false;
     submitWish.innerHTML = tmp;
   };
-
-    
 
   //COMMENTED, EDIT LATER
   // OK
@@ -567,7 +570,7 @@ const comment = (() => {
 
   // OK
   const innerComment = (data) => {
-      return `
+    return `
       <div class="flex items-center gap-2">
 
         <button
@@ -593,31 +596,37 @@ const comment = (() => {
 
   // OK
   const innerCard = (comment) => {
-      let result = '';
+    let result = "";
 
-      comment.forEach((data) => {
-          result += `
-          <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-2 me-0" id="${data.uuid}">
+    comment.forEach((data) => {
+      result += `
+          <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-2 me-0" id="${
+            data.uuid
+          }">
               <div class="d-flex flex-wrap justify-content-between align-items-center">
                   <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                       <strong>${escapeHtml(data.nama)}</strong>
                   </p>
-                  <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
+                  <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${
+                    data.created_at
+                  }</small>
               </div>
               <hr class="text-dark my-1">
-              <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
+              <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(
+                data.komentar,
+              )}</p>
               ${innerComment(data)}
           </div>`;
-      });
+    });
 
-      return result;
+    return result;
   };
 
   // OK
   const renderCard = (data) => {
-      const DIV = document.createElement('div');
-      DIV.classList.add('px-3');
-      DIV.innerHTML = `
+    const DIV = document.createElement("div");
+    DIV.classList.add("px-3");
+    DIV.innerHTML = `
       <div
       class="taos:translate-y-[25px] taos:op acity-0 flex w-full max-w-107 flex-col items-start gap-4 rounded-4xl bg-neutral-White px-6 py-5 duration-[1000ms]"
       data-taos-offset="100" id="${data.uuid}"
@@ -626,7 +635,11 @@ const comment = (() => {
         <div class="flex w-full items-center justify-between gap-16">
           <div class="flex items-center gap-2">
             <p class="BodyBold text-neutral-Black">${escapeHtml(data.nama)}</p>
-            ${data.hadir ? '<img src="assets/icons/check.svg" alt="hadir" width="16px" />' : '<img src="assets/icons/delete.svg" alt="hadir" width="16px" />' }
+            ${
+              data.hadir
+                ? '<img src="assets/icons/check.svg" alt="hadir" width="16px" />'
+                : '<img src="assets/icons/delete.svg" alt="hadir" width="16px" />'
+            }
           </div>
           <p class="BodyItalicSmall text-neutral-Black">${data.created_at}</p>
         </div>
@@ -639,46 +652,48 @@ const comment = (() => {
         ${innerComment(data)}
       </div>
 `;
-      return DIV;
+    return DIV;
   };
-  
 
   // OK
   const ucapan = async () => {
-      const pageNav = document.getElementById('page-navigation');
-      const WISHES = document.getElementById('wishes');
-      WISHES.innerHTML = renderLoading(pagination.getPer());
+    const pageNav = document.getElementById("page-navigation");
+    const WISHES = document.getElementById("wishes");
+    WISHES.innerHTML = renderLoading(pagination.getPer());
 
-      let token = localStorage.getItem('token') ?? '';
-      if (token.length == 0) {
-          alert('Terdapat kesalahan, token kosong!');
-          window.location.reload();
-          return;
-      }
+    let token = localStorage.getItem("token") ?? "";
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong!");
+      window.location.reload();
+      return;
+    }
 
-      await request('GET', `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
-          .token(token)
-          .then((res) => {
-              if (res.code == 200) {
-                  WISHES.innerHTML = null;
-                  res.data.forEach((data) => WISHES.appendChild(renderCard(data)));
-                  pagination.setResultData(res.data.length);
-                  pageNav.style.display= 'flex';
+    await request(
+      "GET",
+      `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`,
+    )
+      .token(token)
+      .then((res) => {
+        if (res.code == 200) {
+          WISHES.innerHTML = null;
+          res.data.forEach((data) => WISHES.appendChild(renderCard(data)));
+          pagination.setResultData(res.data.length);
+          pageNav.style.display = "flex";
 
-                  if (res.data.length == 0) {
-                      WISHES.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
-                  }
-              }
-          })
-          .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+          if (res.data.length == 0) {
+            WISHES.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+          }
+        }
+      })
+      .catch((err) => alert(`Terdapat kesalahan: ${err}`));
   };
 
   // OK
   const renderLoading = (num) => {
-      let result = '';
+    let result = "";
 
-      for (let index = 0; index < num; index++) {
-          result += `
+    for (let index = 0; index < num; index++) {
+      result += `
           <div class="mb-3">
               <div class="card-body bg-light shadow p-3 m-0 rounded-4">
                   <div class="d-flex flex-wrap justify-content-between align-items-center placeholder-glow">
@@ -693,9 +708,9 @@ const comment = (() => {
                   </p>
               </div>
           </div>`;
-      }
+    }
 
-      return result;
+    return result;
   };
 
   // OK
@@ -767,282 +782,290 @@ const comment = (() => {
 
   // OK
   const ubah = async () => {
-      let token = localStorage.getItem('token') ?? '';
-      let id = sunting.getAttribute('data-uuid');
-      let hadir = kehadiran.value;
-      let komentar = formUcapan.value;
+    let token = localStorage.getItem("token") ?? "";
+    let id = sunting.getAttribute("data-uuid");
+    let hadir = kehadiran.value;
+    let komentar = formUcapan.value;
 
-      if (token.length == 0) {
-          alert('Terdapat kesalahan, token kosong !');
-          window.location.reload();
-          return;
-      }
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong !");
+      window.location.reload();
+      return;
+    }
 
-      if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
-          alert('silahkan pilih kehadiran');
-          return;
-      }
+    if (
+      document.getElementById(id).getAttribute("data-parent") === "true" &&
+      hadir == 0
+    ) {
+      alert("silahkan pilih kehadiran");
+      return;
+    }
 
-      if (komentar.length == 0) {
-          alert('pesan tidak boleh kosong');
-          return;
-      }
+    if (komentar.length == 0) {
+      alert("pesan tidak boleh kosong");
+      return;
+    }
 
-      kehadiran.disabled = true;
-      formUcapan.disabled = true;
+    kehadiran.disabled = true;
+    formUcapan.disabled = true;
 
-      sunting.disabled = true;
-      batal.disabled = true;
-      let tmp = sunting.innerHTML;
-      sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+    sunting.disabled = true;
+    batal.disabled = true;
+    let tmp = sunting.innerHTML;
+    sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-      let isSuccess = false;
-      await request('PUT', '/api/comment/' + owns.get(id))
-          .body({
-              hadir: kehadiran.value == 'present',
-              komentar: komentar
-          })
-          .token(token)
-          .then((res) => {
-              if (res.data.status) {
-                  isSuccess = true;
-              }
-          })
-          .catch((err) => {
-              alert(`Terdapat kesalahan: ${err}`);
-          });
+    let isSuccess = false;
+    await request("PUT", "/api/comment/" + owns.get(id))
+      .body({
+        hadir: kehadiran.value == "present",
+        komentar: komentar,
+      })
+      .token(token)
+      .then((res) => {
+        if (res.data.status) {
+          isSuccess = true;
+        }
+      })
+      .catch((err) => {
+        alert(`Terdapat kesalahan: ${err}`);
+      });
 
-      if (isSuccess) {
-          await ucapan();
-          document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
-          resetForm();
-      }
+    if (isSuccess) {
+      await ucapan();
+      document
+        .getElementById(id)
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+      resetForm();
+    }
 
-      sunting.innerHTML = tmp;
-      sunting.disabled = false;
-      batal.disabled = false;
-      kehadiran.disabled = false;
-      formUcapan.disabled = false;
+    sunting.innerHTML = tmp;
+    sunting.disabled = false;
+    batal.disabled = false;
+    kehadiran.disabled = false;
+    formUcapan.disabled = false;
   };
 
   // OK
   const hapus = async (button) => {
-      if (!confirm('Kamu yakin ingin menghapus?')) {
-          return;
-      }
+    if (!confirm("Kamu yakin ingin menghapus?")) {
+      return;
+    }
 
-      let token = localStorage.getItem('token') ?? '';
-      let id = button.getAttribute('data-uuid');
+    let token = localStorage.getItem("token") ?? "";
+    let id = button.getAttribute("data-uuid");
 
-      if (token.length == 0) {
-          alert('Terdapat kesalahan, token kosong !');
-          window.location.reload();
-          return;
-      }
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong !");
+      window.location.reload();
+      return;
+    }
 
-      button.disabled = true;
-      let tmp = button.innerText;
-      button.innerText = 'Loading..';
+    button.disabled = true;
+    let tmp = button.innerText;
+    button.innerText = "Loading..";
 
-      let isSuccess = false;
-      await request('DELETE', '/api/comment/' + owns.get(id))
-          .token(token)
-          .then((res) => {
-              if (res.data.status) {
-                  owns.unset(id);
-                  isSuccess = true;
-              }
-          })
-          .catch((err) => {
-              alert(`Terdapat kesalahan: ${err}`);
-          });
+    let isSuccess = false;
+    await request("DELETE", "/api/comment/" + owns.get(id))
+      .token(token)
+      .then((res) => {
+        if (res.data.status) {
+          owns.unset(id);
+          isSuccess = true;
+        }
+      })
+      .catch((err) => {
+        alert(`Terdapat kesalahan: ${err}`);
+      });
 
-      button.innerText = tmp;
-      button.disabled = false;
+    button.innerText = tmp;
+    button.disabled = false;
 
-      if (isSuccess) {
-          ucapan();
-      }
+    if (isSuccess) {
+      ucapan();
+    }
   };
 
   // OK
   const edit = async (button) => {
-      button.disabled = true;
-      let tmp = button.innerText;
-      button.innerText = 'Loading...';
+    button.disabled = true;
+    let tmp = button.innerText;
+    button.innerText = "Loading...";
 
-      let id = button.getAttribute('data-uuid').toString();
-      let token = localStorage.getItem('token') ?? '';
+    let id = button.getAttribute("data-uuid").toString();
+    let token = localStorage.getItem("token") ?? "";
 
-      if (token.length == 0) {
-          alert('Terdapat kesalahan, token kosong !');
-      }
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong !");
+    }
 
-      await request('GET', '/api/comment/' + id)
-          .token(token)
-          .then((res) => {
-              if (res.code == 200) {
-                  tempID = id;
-                  batal.style.display = 'block';
-                  sunting.style.display = 'block';
-                  submitWish.style.display = 'none';
-                  sunting.setAttribute('data-uuid', id);
-                  formUcapan.value = res.data.komentar;
-                  nama.value = res.data.nama;
-                  kehadiran.value = res.data.hadir === '1' ? 'present' : 'absent';
-                  nama.disabled = true;
+    await request("GET", "/api/comment/" + id)
+      .token(token)
+      .then((res) => {
+        if (res.code == 200) {
+          tempID = id;
+          batal.style.display = "block";
+          sunting.style.display = "block";
+          submitWish.style.display = "none";
+          sunting.setAttribute("data-uuid", id);
+          formUcapan.value = res.data.komentar;
+          nama.value = res.data.nama;
+          kehadiran.value = res.data.hadir === "1" ? "present" : "absent";
+          nama.disabled = true;
 
-                  if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
-                      document.getElementById('label-kehadiran').style.display = 'none';
-                      kehadiran.style.display = 'none';
-                  } else {
-                      kehadiran.value = res.data.hadir ? 1 : 2;
-                      document.getElementById('label-kehadiran').style.display = 'block';
-                      kehadiran.style.display = 'block';
-                  }
-                  document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
-              }
-          })
-          .catch((err) => {
-              alert(`Terdapat kesalahan: ${err}`);
-          });
+          if (
+            document.getElementById(id).getAttribute("data-parent") !== "true"
+          ) {
+            document.getElementById("label-kehadiran").style.display = "none";
+            kehadiran.style.display = "none";
+          } else {
+            kehadiran.value = res.data.hadir ? 1 : 2;
+            document.getElementById("label-kehadiran").style.display = "block";
+            kehadiran.style.display = "block";
+          }
+          document
+            .getElementById("wishes")
+            .scrollIntoView({ behavior: "smooth" });
+        }
+      })
+      .catch((err) => {
+        alert(`Terdapat kesalahan: ${err}`);
+      });
 
-      button.disabled = false;
-      button.innerText = tmp;
+    button.disabled = false;
+    button.innerText = tmp;
   };
 
   // OK
   return {
-      enableGuestNum: enableGuestNum,
-      ucapan: ucapan,
-      kirim: sendWish,
-      render: renderLoading,
+    enableGuestNum: enableGuestNum,
+    ucapan: ucapan,
+    kirim: sendWish,
+    render: renderLoading,
 
-      hapus: hapus,
-      edit: edit,
-      ubah: ubah,
+    hapus: hapus,
+    edit: edit,
+    ubah: ubah,
 
-      // balasan: balasan,
-      // reply: reply,
-      batal: () => {
-          if (tempID) {
-              document.getElementById(tempID).scrollIntoView({ behavior: 'smooth', block: 'center' });
-              tempID = null;
-          }
-          resetForm();
-      },
+    // balasan: balasan,
+    // reply: reply,
+    batal: () => {
+      if (tempID) {
+        document
+          .getElementById(tempID)
+          .scrollIntoView({ behavior: "smooth", block: "center" });
+        tempID = null;
+      }
+      resetForm();
+    },
   };
 })();
 window.comment = comment;
 
-const storage = (table) => ((table) => {
-
-  const get = (key = null) => {
+const storage = (table) =>
+  ((table) => {
+    const get = (key = null) => {
       if (!localStorage.getItem(table)) {
-          localStorage.setItem(table, JSON.stringify({}));
+        localStorage.setItem(table, JSON.stringify({}));
       }
 
       if (key) {
-          return JSON.parse(localStorage.getItem(table))[key];
+        return JSON.parse(localStorage.getItem(table))[key];
       }
 
       return JSON.parse(localStorage.getItem(table));
-  };
+    };
 
-  const set = (key, value) => {
+    const set = (key, value) => {
       let storage = get();
       storage[key] = value;
       localStorage.setItem(table, JSON.stringify(storage));
-  };
+    };
 
-  const unset = (key) => {
+    const unset = (key) => {
       let storage = get();
       delete storage[key];
       localStorage.setItem(table, JSON.stringify(storage));
-  };
+    };
 
-  const has = (key) => Object.keys(get()).includes(key);
+    const has = (key) => Object.keys(get()).includes(key);
 
-  return {
+    return {
       get: get,
       set: set,
       unset: unset,
       has: has,
-  };
-})(table);
+    };
+  })(table);
 
-const likes = storage('likes');
-const owns = storage('owns');
+const likes = storage("likes");
+const owns = storage("owns");
 const request = (method, path) => {
-
-  let url = document.querySelector('body').getAttribute('data-url');
+  let url = document.querySelector("body").getAttribute("data-url");
 
   let req = {
-      method: method,
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
+    method: method,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
   };
 
   return {
-      async then(...prms) {
-          if (url.slice(-1) == '/') {
-              url = url.slice(0, -1);
+    async then(...prms) {
+      if (url.slice(-1) == "/") {
+        url = url.slice(0, -1);
+      }
+
+      return fetch(path ? url + path : url, req)
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.error.length == 0) {
+            return res;
           }
 
-          return fetch(path ? url + path : url, req)
-              .then((res) => res.json())
-              .then((res) => {
-                  if (res.error.length == 0) {
-                      return res;
-                  }
+          throw res.error[0];
+        })
+        .then(...prms);
+    },
+    token(token) {
+      if (token) {
+        req.headers["Authorization"] = "Bearer " + token;
+      }
 
-                  throw res.error[0];
-              })
-              .then(...prms);
-      },
-      token(token) {
-          if (token) {
-              req.headers['Authorization'] = 'Bearer ' + token;
-          }
+      return this;
+    },
+    body(body) {
+      if (body) {
+        req.body = JSON.stringify(body);
+      }
 
-          return this;
-      },
-      body(body) {
-          if (body) {
-              req.body = JSON.stringify(body);
-          }
-
-          return this;
-      },
+      return this;
+    },
   };
 };
 
-
 const login = async () => {
-  let body = document.querySelector('body');
+  let body = document.querySelector("body");
 
-  await request('POST', '/api/session')
-      .body({
-          email: body.getAttribute('data-email'),
-          password: body.getAttribute('data-password')
-      })
-      .then((res) => {
-          if (res.code == 200) {
-              localStorage.removeItem('token');
-              localStorage.setItem('token', res.data.token);
-              comment.ucapan();
-          }
-      })
-      .catch((err) => {
-          alert(`Terdapat kesalahan: ${err}`);
-          window.location.reload();
-          return;
-      });
+  await request("POST", "/api/session")
+    .body({
+      email: body.getAttribute("data-email"),
+      password: body.getAttribute("data-password"),
+    })
+    .then((res) => {
+      if (res.code == 200) {
+        localStorage.removeItem("token");
+        localStorage.setItem("token", res.data.token);
+        comment.ucapan();
+      }
+    })
+    .catch((err) => {
+      alert(`Terdapat kesalahan: ${err}`);
+      window.location.reload();
+      return;
+    });
 };
 window.login = login;
-
 
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
@@ -1072,5 +1095,5 @@ window.addEventListener(
     }, 2000);
     opacity();
   },
-  false
+  false,
 );

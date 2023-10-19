@@ -135,9 +135,10 @@ const bukaUndangan = async () => {
     );
     audio.play();
     await login();
+    comment.reset();
   };
 
-  setTimeout(BukaUndanganClicked, 3000);
+  setTimeout(BukaUndanganClicked, 1500);
   // document.getElementById('tombol-musik').style.display = 'block';
   // audio.play();
   // AOS.init();
@@ -392,7 +393,7 @@ const comment = (() => {
   const jumlahOrang = document.getElementById("jml-orang");
   const formUcapan = document.getElementById("form-ucapan");
   const submitWish = document.getElementById('submit-wish');
-  const balas = document.getElementById('balas');
+  // const balas = document.getElementById('balas');
   const batal = document.getElementById('batal');
   const sunting = document.getElementById('ubah');
   let tempID = null;
@@ -568,25 +569,28 @@ const comment = (() => {
   // OK
   const innerComment = (data) => {
       return `
-      <div class="flex items-center gap-2">
-
+      <div class="flex items-center gap-1">
+      ${owns.has(data.uuid)
+        ? `
         <button
         id="ubah"
         data-uuid="${data.uuid}"
-        class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
+        data-parent="true"
+        class="BodyBoldSmall inline-flex rounded-md  px-2 py-2 text-neutral-Black hover:bg-secondary-Brl-01"
         onclick="comment.edit(this)"
         >
-          Ubah
+          <i class="fa-solid fa-pen" style="color: #f2ae1c;"></i>
         </button>
 
         <button
         id="hapus"
         data-uuid="${data.uuid}"
-        class="BodyBoldSmall inline-flex rounded-lg border border-solid border-secondary-Brl-03 px-2 py-1 text-neutral-Black"
+        class="BodyBoldSmall inline-flex rounded-md px-2 py-2 text-neutral-Black hover:bg-secondary-Brl-01"
         onclick="comment.hapus(this)"
         >
-          Hapus
-        </button>
+          <i class="fa-solid fa-trash" style="color: #d31d1d; font-size: 14px"></i>
+        </button>`
+        : ''}
       </div>
       ${innerCard(data.comments)}`;
   };
@@ -620,7 +624,7 @@ const comment = (() => {
       DIV.innerHTML = `
       <div
       class="taos:translate-y-[25px] taos:op acity-0 flex w-full max-w-107 flex-col items-start gap-4 rounded-4xl bg-neutral-White px-6 py-5 duration-[1000ms]"
-      data-taos-offset="100" id="${data.uuid}"
+      data-taos-offset="100" id="${data.uuid}" data-parent="true"
       >
 
         <div class="flex w-full items-center justify-between gap-16">
@@ -666,7 +670,8 @@ const comment = (() => {
                   pageNav.style.display= 'flex';
 
                   if (res.data.length == 0) {
-                      WISHES.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+                      // WISHES.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+                      pageNav.style.display = 'none';
                   }
               }
           })
@@ -771,6 +776,7 @@ const comment = (() => {
       let id = sunting.getAttribute('data-uuid');
       let hadir = kehadiran.value;
       let komentar = formUcapan.value;
+      let jumlah = jumlahOrang.value;
 
       if (token.length == 0) {
           alert('Terdapat kesalahan, token kosong !');
@@ -778,7 +784,7 @@ const comment = (() => {
           return;
       }
 
-      if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
+      if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 'not-selected') {
           alert('silahkan pilih kehadiran');
           return;
       }
@@ -790,7 +796,7 @@ const comment = (() => {
 
       kehadiran.disabled = true;
       formUcapan.disabled = true;
-
+      jumlahOrang.disabled = true;
       sunting.disabled = true;
       batal.disabled = true;
       let tmp = sunting.innerHTML;
@@ -800,7 +806,8 @@ const comment = (() => {
       await request('PUT', '/api/comment/' + owns.get(id))
           .body({
               hadir: kehadiran.value == 'present',
-              komentar: komentar
+              komentar,
+              jumlah
           })
           .token(token)
           .then((res) => {
@@ -868,7 +875,8 @@ const comment = (() => {
   // OK
   const edit = async (button) => {
       button.disabled = true;
-      let tmp = button.innerText;
+      // let tmp = button.innerText;
+      let tmp2 = button.innerHTML;
       button.innerText = 'Loading...';
 
       let id = button.getAttribute('data-uuid').toString();
@@ -889,18 +897,18 @@ const comment = (() => {
                   sunting.setAttribute('data-uuid', id);
                   formUcapan.value = res.data.komentar;
                   nama.value = res.data.nama;
-                  kehadiran.value = res.data.hadir === '1' ? 'present' : 'absent';
                   nama.disabled = true;
 
                   if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
-                      document.getElementById('label-kehadiran').style.display = 'none';
+                      document.getElementById('label-konfirmasi').style.display = 'none';
                       kehadiran.style.display = 'none';
                   } else {
-                      kehadiran.value = res.data.hadir ? 1 : 2;
-                      document.getElementById('label-kehadiran').style.display = 'block';
+                      kehadiran.value = res.data.hadir ? 'present' : 'absent';
+                      jumlahOrang.value = res.data.jumlah;
+                      document.getElementById('label-konfirmasi').style.display = 'block';
                       kehadiran.style.display = 'block';
                   }
-                  document.getElementById('wishes').scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('write-wish').scrollIntoView({ behavior: 'smooth' });
               }
           })
           .catch((err) => {
@@ -908,7 +916,8 @@ const comment = (() => {
           });
 
       button.disabled = false;
-      button.innerText = tmp;
+      // button.innerText = tmp;
+      button.innerHTML = tmp2;
   };
 
   // OK
@@ -917,6 +926,7 @@ const comment = (() => {
       ucapan: ucapan,
       kirim: sendWish,
       render: renderLoading,
+      reset : resetForm,
 
       hapus: hapus,
       edit: edit,
@@ -971,7 +981,7 @@ const storage = (table) => ((table) => {
   };
 })(table);
 
-const likes = storage('likes');
+// const likes = storage('likes');
 const owns = storage('owns');
 const request = (method, path) => {
 

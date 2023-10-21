@@ -697,6 +697,35 @@ const comment = (() => {
         }
       })
       .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+
+    let jumlahComment = await numOfComment();
+    console.log(
+      `data : ${
+        pagination.getPer() + pagination.getNext()
+      }, jumlah : ${jumlahComment}`,
+    );
+    if (pagination.getPer() + pagination.getNext() >= jumlahComment) {
+      document.getElementById("selanjutnya").disabled = true;
+    }
+  };
+
+  const numOfComment = async () => {
+    let token = localStorage.getItem("token") ?? "";
+    let jumlah = 0;
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong!");
+      window.location.reload();
+      return;
+    }
+    await request("GET", `/api/comment/count`)
+      .token(token)
+      .then((res) => {
+        if (res.code == 200) {
+          jumlah = res.data[0].jumlah;
+        }
+      })
+      .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+    return jumlah;
   };
 
   // OK

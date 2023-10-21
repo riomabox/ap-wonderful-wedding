@@ -323,11 +323,12 @@ const pagination = (() => {
     button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
     await comment.ucapan();
     document.getElementById("wishes").scrollIntoView({ behavior: "smooth" });
-    if (resultData < perPage || pageNow <= 0) {
+    if (resultData < perPage || pageNow < 0) {
       button.disabled = true;
     } else {
       button.disabled = false;
     }
+    // button.disabled = false;
     button.innerHTML = tmp;
   };
 
@@ -689,6 +690,35 @@ const comment = (() => {
         }
       })
       .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+
+    let jumlahComment = await numOfComment();
+    console.log(
+      `data : ${
+        pagination.getPer() + pagination.getNext()
+      }, jumlah : ${jumlahComment}`,
+    );
+    if (pagination.getPer() + pagination.getNext() >= jumlahComment) {
+      document.getElementById("selanjutnya").disabled = true;
+    }
+  };
+
+  const numOfComment = async () => {
+    let token = localStorage.getItem("token") ?? "";
+    let jumlah = 0;
+    if (token.length == 0) {
+      alert("Terdapat kesalahan, token kosong!");
+      window.location.reload();
+      return;
+    }
+    await request("GET", `/api/comment/count`)
+      .token(token)
+      .then((res) => {
+        if (res.code == 200) {
+          jumlah = res.data[0].jumlah;
+        }
+      })
+      .catch((err) => alert(`Terdapat kesalahan: ${err}`));
+    return jumlah;
   };
 
   // OK
@@ -950,7 +980,7 @@ const comment = (() => {
               : (jumlahOrang.disabled = true);
           }
           document
-            .getElementById("wishes")
+            .getElementById("write-wish")
             .scrollIntoView({ behavior: "smooth" });
         }
       })
@@ -968,6 +998,7 @@ const comment = (() => {
     ucapan: ucapan,
     kirim: sendWish,
     render: renderLoading,
+    numOfComment: numOfComment,
 
     hapus: hapus,
     edit: edit,

@@ -361,7 +361,10 @@ const pagination = (() => {
         pageNow -= perPage;
         disabledNext();
         await buttonAction(button);
-        page.innerText = parseInt(page.innerText) - 1;
+        let jumlahComment = await comment.numOfComment();
+        page.innerText = `${parseInt(page.innerText) - 1} dari ${Math.ceil(
+          jumlahComment / perPage,
+        )}`;
         next.disabled = false;
         if (pageNow <= 0) {
           disabledPrevious();
@@ -375,7 +378,10 @@ const pagination = (() => {
         pageNow += perPage;
         disabledPrevious();
         await buttonAction(button);
-        page.innerText = parseInt(page.innerText) + 1;
+        let jumlahComment = await comment.numOfComment();
+        page.innerText = `${parseInt(page.innerText) + 1} dari ${Math.ceil(
+          jumlahComment / perPage,
+        )}`;
         prev.disabled = false;
       }
     },
@@ -707,6 +713,11 @@ const comment = (() => {
     if (pagination.getPer() + pagination.getNext() >= jumlahComment) {
       document.getElementById("selanjutnya").disabled = true;
     }
+
+    let page = document.getElementById("page");
+    page.innerText = `${parseInt(page.innerText)} dari ${Math.ceil(
+      jumlahComment / pagination.getPer(),
+    )}`;
   };
 
   const numOfComment = async () => {
